@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <defs>
+    <pattern id="g2" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="2.5" cy="2.5" r="2" fill="#B5A4E2"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="700" fill="#F7F5FC"/>
+  <rect width="1200" height="700" fill="url(#g2)"/>
+  <path d="M600 250l110 42v84c0 69-48 129-110 150-62-21-110-81-110-150v-84l110-42z" fill="none" stroke="#7856BD" stroke-width="9"/>
+  <rect x="583" y="338" width="34" height="34" rx="8" fill="#2C986D"/>
+  <text x="600" y="580" font-family="ui-monospace, monospace" font-size="26" letter-spacing="5" fill="#50348C" text-anchor="middle">PHOTO COMING SOON</text>
+</svg>
+

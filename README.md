@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WiCyS Kean University Student Chapter website
 
-## Getting Started
+Next.js site with a built-in editor (Keystatic) so e-board members can post
+events, photos, officers, and sponsors without touching code.
 
-First, run the development server:
+- Site: pages live in `app/(site)/`
+- Content: YAML files in `content/`, uploaded images in `public/images/uploads/`
+- Editor: `/keystatic` (or `/admin`, which redirects there)
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. The editor at http://localhost:3000/keystatic
+saves straight to the files on your machine when
+`NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO` is blank.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Going live (one-time setup)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push this repo to GitHub (`vinnypronel/wicys-kean`).
+2. Import the repo in Vercel and deploy.
+3. Create `.env.local` with `NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO=vinnypronel/wicys-kean`,
+   run `npm run dev`, open `/keystatic`, and follow the "Create GitHub App"
+   prompt. Keystatic writes the remaining `KEYSTATIC_*` values into your env
+   file. Install the new GitHub App on the `wicys-kean` repo when GitHub asks.
+4. In the GitHub App settings, add the production callback URL:
+   `https://YOUR-DOMAIN/api/keystatic/github/oauth/callback`.
+5. Copy every value from `.env.local` into Vercel (Settings, Environment
+   Variables), plus `NEXT_PUBLIC_SITE_URL` once there is a custom domain.
+   Redeploy.
+6. Add each officer who will edit the site as a collaborator on the GitHub
+   repo (they need a free GitHub account).
 
-## Learn More
+Every save in the editor becomes a commit on `main`, and Vercel redeploys the
+site in about a minute.
 
-To learn more about Next.js, take a look at the following resources:
+## Photos
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Upload photos as they come off the phone. They are shrunk automatically:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- The "Optimize uploaded images" GitHub Action resizes anything in
+  `public/images/uploads/` to at most 2000px and recompresses it, then commits
+  the smaller file (same name, so nothing breaks).
+- The same script runs before every build (`npm run images` runs it by hand).
+- Next.js then serves each photo as AVIF or WebP at the size the screen needs.
 
-## Deploy on Vercel
+HEIC files are not supported; iPhones convert to JPG when uploading from the
+browser, otherwise export as JPG first.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Officer guide: updating the site
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Go to `/admin` on the live site and sign in with GitHub.
+
+**Add an event.** Activities, Events, Add. Fill in title, type, start time
+(Eastern), location, and description. Add a registration link and flyer if
+you have them. Save. The event shows under Upcoming, gets its own page with
+"Add to calendar" buttons, and moves to Past on its own after it ends.
+
+**Post a recap.** Open the event after it happens and fill in Recap,
+Highlights, and Photos. Everything shows on the event's page and the Past
+events list.
+
+**Add a gallery album.** Activities, Gallery albums, Add. Set the semester,
+academic year (like `2026-2027`), and category, optionally link the event,
+then add photos. Albums linked to an event also show on that event's page.
+
+**Officers.** People, E-board members. Display order controls position
+(1 shows first).
+
+**Sponsors.** Sponsors, Sponsors and partners for logos. Sponsors,
+Sponsorship page for the intro, benefits, and the downloadable PDF packet.
+
+**Meeting info, email, socials.** Content, Site settings.
