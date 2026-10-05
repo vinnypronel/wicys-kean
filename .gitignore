@@ -40,3 +40,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# original e-board photos (optimized copies live in public/images/uploads)
+/EBOARD/
+
+# hero video test renders
+/output/
+
+# photos pulled from the chapter Canva deck (staging, not yet on the site)
+/canva-photos/

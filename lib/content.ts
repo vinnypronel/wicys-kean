@@ -37,6 +37,22 @@ export async function getSponsorPage() {
   }
 }
 
+export async function getDonatePage() {
+  try {
+    return await reader.singletons.donatePage.read();
+  } catch {
+    return null;
+  }
+}
+
+export async function getGetInvolvedPage() {
+  try {
+    return await reader.singletons.getInvolvedPage.read();
+  } catch {
+    return null;
+  }
+}
+
 export type EventEntry = Awaited<ReturnType<typeof getAllEvents>>[number];
 
 export async function getAllEvents() {
@@ -92,6 +108,37 @@ export async function getEboardMembers() {
       slug: member.slug,
       ...member.entry,
     }))
+    .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+}
+
+// Sample entries (name starting with PLACEHOLDER) stay in the editor as
+// examples but never show on the public site.
+function isRealPerson(person: { name: string }) {
+  return !person.name.trim().toUpperCase().startsWith('PLACEHOLDER');
+}
+
+export async function getScholars() {
+  const scholars = await reader.collections.scholars.all().catch(() => []);
+  return scholars
+    .map((scholar) => ({
+      slug: scholar.slug,
+      ...scholar.entry,
+    }))
+    .filter(isRealPerson)
+    .sort(
+      (a, b) =>
+        b.year.localeCompare(a.year) || (a.order ?? 99) - (b.order ?? 99)
+    );
+}
+
+export async function getAlumni() {
+  const alumni = await reader.collections.alumni.all().catch(() => []);
+  return alumni
+    .map((alum) => ({
+      slug: alum.slug,
+      ...alum.entry,
+    }))
+    .filter(isRealPerson)
     .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 }
 

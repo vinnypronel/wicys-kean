@@ -60,7 +60,7 @@ export default function EventCard({ event }: { event: EventEntry }) {
             href={event.registrationUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg bg-accent-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-700"
+            className="btn-green whitespace-nowrap px-4 py-2.5"
           >
             Register
             <ArrowRight className="h-4 w-4" />

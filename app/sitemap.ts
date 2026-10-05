@@ -12,6 +12,8 @@ const PAGES = [
   '/resources',
   '/gallery',
   '/join',
+  '/get-involved',
+  '/donate',
   '/contact',
 ];
 

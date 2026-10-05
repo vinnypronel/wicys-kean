@@ -37,6 +37,18 @@ saves straight to the files on your machine when
 Every save in the editor becomes a commit on `main`, and Vercel redeploys the
 site in about a minute.
 
+## Contact form
+
+The form on the Contact page sends email through Resend (resend.com). Add
+these in Vercel (Settings, Environment Variables):
+
+- `RESEND_API_KEY`: from the Resend dashboard
+- `CONTACT_TO_EMAIL`: where messages go (defaults to the chapter email)
+- `CONTACT_FROM_EMAIL`: the sender, once a domain is verified in Resend
+
+Until the key is set, the form tells visitors to email the chapter directly,
+so no messages are lost.
+
 ## Photos
 
 Upload photos as they come off the phone. They are shrunk automatically:
@@ -72,5 +84,16 @@ then add photos. Albums linked to an event also show on that event's page.
 
 **Sponsors.** Sponsors, Sponsors and partners for logos. Sponsors,
 Sponsorship page for the intro, benefits, and the downloadable PDF packet.
+
+**Scholarship recipients and alumni.** People, Scholarship recipients or
+Alumni. Both show on the E-Board page. A section stays hidden
+until it has at least one real person in it. Entries whose name starts with
+`PLACEHOLDER` are examples and never show on the site.
+
+**Donate page.** Sponsors, Donate page. Add a giving link, Venmo, Cash App, or
+Zelle. Any option left blank is hidden. Only add options the chapter is
+approved to use.
+
+**Get Involved page.** Content, Get involved page for the intro and cards.
 
 **Meeting info, email, socials.** Content, Site settings.

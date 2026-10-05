@@ -48,10 +48,11 @@ export default async function ResourcesPage() {
 
   return (
     <>
-      <section className="border-b border-brand-100 bg-surface">
-        <div className="container-site py-16 sm:py-20">
+      <section className="page-hero">
+        <div className="container-site py-16 sm:py-24">
           <SectionHeading
             level="h1"
+            tone="dark"
             kicker="Resources"
             title="Tools to learn, practice, and get hired"
             lede="A curated starting point for members, from first tutorials to certifications and conferences. Have a suggestion? Send it to the board."
@@ -61,7 +62,7 @@ export default async function ResourcesPage() {
               <a
                 key={group.key}
                 href={`#${group.key}`}
-                className="text-sm font-medium text-brand-700 underline-offset-4 transition-colors hover:text-accent-700 hover:underline"
+                className="text-sm font-medium text-brand-200 underline-offset-4 transition-colors hover:text-accent-400 hover:underline"
               >
                 {group.label}
               </a>

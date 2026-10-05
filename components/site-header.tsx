@@ -1,18 +1,21 @@
 'use client';
 
-import { Mail, MessagesSquare } from 'lucide-react';
+import { ArrowRight, Mail, MessagesSquare, Search, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { InstagramGlyph, LinkedinGlyph } from '@/components/brand-icons';
+import SiteSearch from '@/components/site-search';
 
 const NAV_LINKS = [
   { href: '/events', label: 'Events' },
   { href: '/eboard', label: 'E-Board' },
+  { href: '/get-involved', label: 'Get Involved' },
   { href: '/ctf', label: 'CTF' },
   { href: '/sponsors', label: 'Sponsors' },
+  { href: '/donate', label: 'Donate' },
   { href: '/resources', label: 'Resources' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/contact', label: 'Contact' },
@@ -50,12 +53,48 @@ export default function SiteHeader({
 }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [prevPathname, setPrevPathname] = useState(pathname);
 
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
     if (menuOpen) setMenuOpen(false);
+    if (searchOpen) setSearchOpen(false);
   }
+
+  const toggleSearch = () => {
+    setMenuOpen(false);
+    setSearchOpen((current) => !current);
+  };
+
+  // Ctrl/Cmd+K or "/" opens search, Escape closes it.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      const typing =
+        target?.tagName === 'INPUT' ||
+        target?.tagName === 'TEXTAREA' ||
+        target?.tagName === 'SELECT' ||
+        target?.isContentEditable;
+      if ((event.key === 'k' && (event.metaKey || event.ctrlKey)) || (event.key === '/' && !typing)) {
+        event.preventDefault();
+        setMenuOpen(false);
+        setSearchOpen(true);
+      } else if (event.key === 'Escape') {
+        setSearchOpen(false);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
+  useEffect(() => {
+    const updateScrolled = () => setScrolled(window.scrollY > 8);
+    updateScrolled();
+    window.addEventListener('scroll', updateScrolled, { passive: true });
+    return () => window.removeEventListener('scroll', updateScrolled);
+  }, []);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -79,12 +118,18 @@ export default function SiteHeader({
 
   const closeMenu = () => setMenuOpen(false);
   const overlayLinks = [{ href: '/', label: 'Home' }, ...NAV_LINKS];
+  const transparentAtTop = pathname === '/' && !scrolled && !menuOpen && !searchOpen;
+  const iconButtonTone = transparentAtTop
+    ? 'text-white/90 hover:bg-white/10 hover:text-white'
+    : 'text-ink-soft hover:bg-brand-50 hover:text-brand-700';
 
   return (
     <>
       <header
-        className={`sticky top-0 z-50 border-b bg-white/90 backdrop-blur transition-colors duration-300 ${
-          menuOpen ? 'border-transparent' : 'border-brand-100'
+        className={`${pathname === '/' ? 'fixed' : 'sticky'} top-0 z-50 w-full border-b transition-[background-color,border-color,box-shadow] duration-300 ${
+          transparentAtTop
+            ? 'site-header-overlay border-transparent bg-transparent shadow-none'
+            : `bg-white/95 shadow-sm backdrop-blur ${menuOpen ? 'border-transparent' : 'border-brand-100'}`
         }`}
       >
         <div className="container-site relative z-50 flex h-16 items-center justify-between gap-4 lg:h-[72px]">
@@ -92,22 +137,24 @@ export default function SiteHeader({
             href="/"
             aria-label="WiCyS Kean University home"
             onClick={menuOpen ? closeMenu : undefined}
-            className="flex items-center"
+            className="flex items-center transition-transform duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.04] focus-visible:-translate-y-0.5 focus-visible:scale-[1.04]"
           >
             <Logo preload />
           </Link>
 
           <nav
             aria-label="Primary"
-            className="hidden items-center gap-6 xl:gap-7 lg:flex"
+            className="hidden items-center gap-4 min-[1100px]:gap-6 xl:gap-7 lg:flex"
           >
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 aria-current={isActive(link.href) ? 'page' : undefined}
-                className={`group relative py-1 text-sm font-medium transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:rounded-sm after:bg-accent-600 after:transition-transform after:duration-300 ${
-                  isActive(link.href)
+                className={`group relative whitespace-nowrap py-1 text-sm font-medium transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-full after:origin-right hover:after:origin-left after:rounded-sm after:bg-accent-400 after:transition-transform after:duration-300 ${
+                  transparentAtTop
+                    ? 'text-white/90 after:scale-x-0 hover:text-white hover:after:scale-x-100'
+                    : isActive(link.href)
                     ? 'text-brand-700 after:scale-x-100'
                     : 'text-ink-soft after:scale-x-0 hover:text-brand-700 hover:after:scale-x-100'
                 }`}
@@ -115,14 +162,36 @@ export default function SiteHeader({
                 {link.label}
               </Link>
             ))}
+            <button
+              type="button"
+              onClick={toggleSearch}
+              aria-label={searchOpen ? 'Close search' : 'Search this site'}
+              aria-expanded={searchOpen}
+              className={`grid h-9 w-9 place-items-center rounded-lg transition-colors ${iconButtonTone}`}
+            >
+              {searchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
+            </button>
             <Link
               href="/join"
-              className="inline-flex items-center justify-center rounded-lg bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-700"
+              className="btn-green px-4 py-2"
             >
               Join WiCyS
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </nav>
 
+          <div className="flex items-center gap-1 lg:hidden">
+          {menuOpen ? null : (
+            <button
+              type="button"
+              onClick={toggleSearch}
+              aria-label={searchOpen ? 'Close search' : 'Search this site'}
+              aria-expanded={searchOpen}
+              className={`relative z-50 grid h-10 w-10 place-items-center rounded-lg transition-colors ${iconButtonTone}`}
+            >
+              {searchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
+            </button>
+          )}
           {menuOpen ? (
             <button
               type="button"
@@ -144,7 +213,10 @@ export default function SiteHeader({
           ) : (
             <button
               type="button"
-              onClick={() => setMenuOpen(true)}
+              onClick={() => {
+                setSearchOpen(false);
+                setMenuOpen(true);
+              }}
               aria-label="Open navigation menu"
               aria-expanded={menuOpen}
               aria-controls="mobile-nav-takeover"
@@ -157,8 +229,11 @@ export default function SiteHeader({
               </span>
             </button>
           )}
+          </div>
         </div>
       </header>
+
+      <SiteSearch open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       <div
         id="mobile-nav-takeover"
@@ -191,6 +266,7 @@ export default function SiteHeader({
             className="btn-green w-full max-w-xs"
           >
             Join WiCyS
+            <ArrowRight className="h-4 w-4" />
           </Link>
           {socials.length > 0 ? (
             <div className="nav-takeover-socials">
