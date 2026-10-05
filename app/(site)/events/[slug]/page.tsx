@@ -74,47 +74,47 @@ export default async function EventPage({
 
   return (
     <>
-      <section className="border-b border-brand-100 bg-surface">
-        <div className="container-site py-12 sm:py-16">
+      <section className="page-hero">
+        <div className="container-site py-12 sm:py-20">
           <Link
             href="/events"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 transition-colors hover:text-accent-700"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-200 transition-colors hover:text-accent-400"
           >
             <ArrowLeft className="h-4 w-4" />
             All events
           </Link>
-          <p className="kicker mt-8">
+          <p className="kicker kicker-light mt-8">
             {eventTypeLabel(event.type)}
             {past ? ' · Past event' : ''}
           </p>
-          <h1 className="mt-4 max-w-3xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-ink sm:text-5xl">
+          <h1 className="mt-4 max-w-3xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl">
             {event.title}
           </h1>
 
-          <dl className="mt-8 grid max-w-3xl gap-4 text-sm text-ink-soft sm:grid-cols-3">
+          <dl className="mt-8 grid max-w-3xl gap-4 text-sm text-brand-200 sm:grid-cols-3">
             <div className="flex items-start gap-2.5">
-              <CalendarDays className="mt-0.5 h-4 w-4 shrink-0 text-accent-600" />
+              <CalendarDays className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" />
               <div>
                 <dt className="sr-only">Date</dt>
-                <dd className="font-medium text-ink">
+                <dd className="font-medium text-white">
                   {formatLongDate(event.startDate)}
                 </dd>
               </div>
             </div>
             <div className="flex items-start gap-2.5">
-              <Clock className="mt-0.5 h-4 w-4 shrink-0 text-accent-600" />
+              <Clock className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" />
               <div>
                 <dt className="sr-only">Time</dt>
-                <dd className="font-medium text-ink">
+                <dd className="font-medium text-white">
                   {formatTime(event.startDate)} to {formatTime(end)} ET
                 </dd>
               </div>
             </div>
             <div className="flex items-start gap-2.5">
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent-600" />
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" />
               <div>
                 <dt className="sr-only">Location</dt>
-                <dd className="font-medium text-ink">{event.location}</dd>
+                <dd className="font-medium text-white">{event.location}</dd>
               </div>
             </div>
           </dl>
@@ -136,7 +136,7 @@ export default async function EventPage({
                 href={googleCalendarUrl(event)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-outline"
+                className="btn-outline-light"
               >
                 <CalendarPlus className="h-4 w-4" />
                 Google Calendar
@@ -144,7 +144,7 @@ export default async function EventPage({
               <a
                 href={`/events/${event.slug}/event.ics`}
                 download={`${event.slug}.ics`}
-                className="btn-outline"
+                className="btn-outline-light"
               >
                 <Download className="h-4 w-4" />
                 Apple or Outlook (.ics)
@@ -190,7 +190,7 @@ export default async function EventPage({
                       key={index}
                       className="flex items-start gap-3 text-base leading-relaxed text-ink-soft"
                     >
-                      <span className="mt-[9px] h-1.5 w-1.5 shrink-0 bg-accent-600" />
+                      <span className="mt-[9px] h-1.5 w-1.5 shrink-0 bg-accent-400" />
                       {highlight}
                     </li>
                   ))}

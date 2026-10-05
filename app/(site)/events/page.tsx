@@ -22,10 +22,11 @@ export default async function EventsPage() {
 
   return (
     <>
-      <section className="border-b border-brand-100 bg-surface">
-        <div className="container-site py-16 sm:py-20">
+      <section className="page-hero">
+        <div className="container-site py-16 sm:py-24">
           <SectionHeading
             level="h1"
+            tone="dark"
             kicker="Events and activities"
             title="What is happening this semester"
             lede="General body meetings, hands-on workshops, guest speakers, conference trips, and networking events. Registration links go live as events are announced."
@@ -39,7 +40,7 @@ export default async function EventsPage() {
             Upcoming events
           </h2>
           {upcoming.length > 0 ? (
-            <div className="mt-8 space-y-5">
+            <div data-reveal-group className="mt-8 space-y-5">
               {upcoming.map((event) => (
                 <EventCard key={event.slug} event={event} />
               ))}

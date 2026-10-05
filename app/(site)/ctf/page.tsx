@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Check } from 'lucide-react';
+import { Check, Mail } from 'lucide-react';
 
 import PhotoGrid from '@/components/photo-grid';
 import SectionHeading from '@/components/section-heading';
@@ -15,12 +15,10 @@ export default async function CtfPage() {
   const [ctf, settings] = await Promise.all([getCtfPage(), getSiteSettings()]);
 
   const photos: string[] = filterPhotos(ctf?.photos);
-  const displayPhotos =
-    photos.length > 0 ? photos : ['/images/placeholders/ph-wide.svg'];
 
   return (
     <>
-      <section className="bg-plum">
+      <section className="page-hero">
         <div className="container-site py-16 sm:py-24">
           <p className="kicker kicker-light">WiCyS Kean CTF</p>
           <h1 className="mt-5 max-w-3xl font-display text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl">
@@ -59,7 +57,7 @@ export default async function CtfPage() {
                     key={index}
                     className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-soft"
                   >
-                    <span className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-accent-600" />
+                    <span className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-accent-400" />
                     {highlight}
                   </li>
                 ))}
@@ -87,15 +85,17 @@ export default async function CtfPage() {
           </div>
         </div>
 
-        <div className="container-site mt-4">
-          <PhotoGrid
-            aspectClassName="aspect-video"
-            photos={displayPhotos.map((src, index) => ({
-              src,
-              alt: `Previous WiCyS Kean CTF photo ${index + 1}`,
-            }))}
-          />
-        </div>
+        {photos.length > 0 ? (
+          <div className="container-site mt-4">
+            <PhotoGrid
+              aspectClassName="aspect-video"
+              photos={photos.map((src, index) => ({
+                src,
+                alt: `Previous WiCyS Kean CTF photo ${index + 1}`,
+              }))}
+            />
+          </div>
+        ) : null}
       </section>
 
       <section className="border-t border-brand-100 bg-surface py-16 sm:py-20">
@@ -131,7 +131,7 @@ export default async function CtfPage() {
               <ol className="mt-5 space-y-0 border-l border-brand-200 pl-6">
                 {(ctf?.timeline ?? []).map((item, index) => (
                   <li key={index} className="relative pb-6 last:pb-0">
-                    <span className="absolute -left-[30px] top-1 h-3 w-3 rounded-full border-2 border-accent-600 bg-white" />
+                    <span className="absolute -left-[30px] top-1 h-3 w-3 rounded-full border-2 border-accent-400 bg-white" />
                     <p className="text-sm leading-relaxed text-ink-soft">{item}</p>
                   </li>
                 ))}
@@ -147,7 +147,7 @@ export default async function CtfPage() {
                     key={index}
                     className="flex items-start gap-3 text-sm leading-relaxed text-ink-soft"
                   >
-                    <span className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-accent-600" />
+                    <span className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-accent-400" />
                     {step}
                   </li>
                 ))}
@@ -157,6 +157,7 @@ export default async function CtfPage() {
                   href={`mailto:${settings.chapterEmail}?subject=CTF interest`}
                   className="btn-green mt-7"
                 >
+                  <Mail className="h-4 w-4" />
                   Let us know you are interested
                 </a>
               ) : null}

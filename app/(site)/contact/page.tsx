@@ -1,14 +1,20 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import {
+  ArrowRight,
   ArrowUpRight,
   Mail,
   MapPin,
-  MessagesSquare,
 } from 'lucide-react';
 
-import { InstagramGlyph, LinkedinGlyph } from '@/components/brand-icons';
+import {
+  DiscordLogo,
+  InstagramLogo,
+  LinkedinGlyph,
+  OutlookLogo,
+} from '@/components/brand-icons';
 
+import ContactForm from '@/components/contact-form';
 import SectionHeading from '@/components/section-heading';
 import { getSiteSettings } from '@/lib/content';
 import { meetingSummary } from '@/lib/format';
@@ -19,25 +25,29 @@ export const metadata: Metadata = {
     'Get in touch with WiCyS at Kean University. Find our email, Discord, Instagram, LinkedIn, and CougarLink pages.',
 };
 
-export default async function ContactPage() {
-  const settings = await getSiteSettings();
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ topic?: string | string[] }>;
+}) {
+  const [settings, { topic }] = await Promise.all([getSiteSettings(), searchParams]);
 
   const meetings = meetingSummary(settings);
 
   const channels = [
     settings?.chapterEmail
       ? {
-          Icon: Mail,
+          Icon: OutlookLogo,
           label: 'Email',
           value: settings.chapterEmail,
           href: `mailto:${settings.chapterEmail}`,
         }
       : null,
     settings?.discordUrl
-      ? { Icon: MessagesSquare, label: 'Discord', value: 'Join our Discord', href: settings.discordUrl }
+      ? { Icon: DiscordLogo, label: 'Discord', value: 'Join our Discord', href: settings.discordUrl }
       : null,
     settings?.instagramUrl
-      ? { Icon: InstagramGlyph, label: 'Instagram', value: settings.instagramHandle || 'Follow us on Instagram', href: settings.instagramUrl }
+      ? { Icon: InstagramLogo, label: 'Instagram', value: settings.instagramHandle || 'Follow us on Instagram', href: settings.instagramUrl }
       : null,
     settings?.linkedinUrl
       ? { Icon: LinkedinGlyph, label: 'LinkedIn', value: 'WiCyS Kean on LinkedIn', href: settings.linkedinUrl }
@@ -52,13 +62,14 @@ export default async function ContactPage() {
 
   return (
     <>
-      <section className="border-b border-brand-100 bg-surface">
-        <div className="container-site py-16 sm:py-20">
+      <section className="page-hero">
+        <div className="container-site py-16 sm:py-24">
           <SectionHeading
             level="h1"
+            tone="dark"
             kicker="Contact"
             title="Say hello"
-            lede="Questions about joining, events, or sponsorships? The fastest way to reach us is email or Discord."
+            lede="Questions about joining, events, or sponsorships? Send us a message below, or reach us by email or Discord."
           />
         </div>
       </section>
@@ -107,6 +118,10 @@ export default async function ContactPage() {
                 posted here.
               </p>
             )}
+
+            <div className="mt-10">
+              <ContactForm defaultTopic={typeof topic === 'string' ? topic : undefined} />
+            </div>
           </div>
 
           <div className="flex flex-col gap-5">
@@ -123,12 +138,14 @@ export default async function ContactPage() {
                 <div className="mt-6 flex flex-wrap gap-3">
                   <a
                     href={`mailto:${settings.chapterEmail}?subject=Sponsorship inquiry`}
-                    className="inline-flex items-center justify-center rounded-lg bg-accent-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-500"
+                    className="btn-green px-4 py-2.5"
                   >
+                    <Mail className="h-4 w-4" />
                     Email us
                   </a>
                   <a href="/sponsors" className="btn-outline-light px-4 py-2.5">
                     Sponsorship info
+                    <ArrowRight className="h-4 w-4" />
                   </a>
                 </div>
               </div>

@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     template: '%s | WiCyS Kean',
   },
   description:
-    'The Kean University student chapter of Women in CyberSecurity. Community, workshops, mentorship, and career opportunities in cybersecurity for all Kean students.',
+    'The Kean University student chapter of Women in CyberSecurity. Community, workshops, competitions, and career opportunities in cybersecurity for all Kean students.',
 };
 
 export default function RootLayout({

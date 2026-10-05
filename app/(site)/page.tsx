@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+import { DiscordLogo, InstagramLogo } from '@/components/brand-icons';
 import SectionHeading from '@/components/section-heading';
 import {
   filterPhotos,
@@ -19,7 +20,7 @@ import {
   getSiteSettings,
   getUpcomingEvents,
 } from '@/lib/content';
-import { formatShortDate, meetingSummary } from '@/lib/format';
+import { formatShortDate } from '@/lib/format';
 
 const QUICK_LINKS = [
   { href: '/join', label: 'Join WiCyS', blurb: 'Become a member in minutes', Icon: UserPlus },
@@ -33,7 +34,7 @@ const WHAT_WE_DO = [
   { label: 'Guest speakers from industry' },
   { label: 'Annual Capture the Flag event' },
   { label: 'Conference trips and scholarships' },
-  { label: 'Mentorship pairings with professionals' },
+  { label: 'Resume and interview prep' },
   { label: 'Networking with recruiters and alumni' },
 ];
 
@@ -49,100 +50,97 @@ export default async function HomePage() {
   ]);
 
   const featuredEvents = upcoming.slice(0, 2);
-  const meetings = meetingSummary(settings);
-  const latestAlbum = albums[0];
+  const latestAlbum =
+    albums.find((album) => filterPhotos(album.photos).length > 0) ?? albums[0];
   const teaserPhotos = latestAlbum ? filterPhotos(latestAlbum.photos) : [];
 
   return (
     <>
-      <section className="relative overflow-hidden">
+      <section className="relative flex min-h-screen items-center overflow-hidden bg-plum">
+        <video
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover [filter:saturate(0.62)_brightness(0.82)_contrast(1.06)]"
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/images/kean-hero-muted.jpg"
+        >
+          <source src="/videos/kean-hero-directional-v3.mp4" type="video/mp4" />
+        </video>
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--color-brand-100),transparent_55%)]"
+          className="absolute inset-0 bg-gradient-to-r from-black/75 via-brand-950/45 to-black/20"
         />
-        <div className="container-site relative grid items-center gap-14 py-16 sm:py-20 lg:grid-cols-[1.05fr_1fr] lg:py-24">
-          <div>
-            <p className="kicker">Kean University Student Chapter</p>
-            <h1 className="mt-5 font-display text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-[3.4rem]">
-              Where Kean students get involved with{' '}
-              <span className="text-brand-700">cybersecurity</span>.
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/20"
+        />
+        <div className="relative mx-auto w-full max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24">
+          <div className="ml-auto flex max-w-4xl origin-right translate-y-6 flex-col items-end text-right md:scale-[1.12] xl:scale-[1.18]">
+            <h1 className="w-full font-display text-5xl font-bold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-[5.5rem] xl:text-[6rem]">
+              <span className="block">
+                <Image
+                  src="/images/wicys-wordmark.png"
+                  alt="WiCyS"
+                  width={826}
+                  height={296}
+                  preload
+                  className="ml-auto h-[1.05em] w-auto"
+                />
+              </span>
+              <span className="mt-[0.06em] block">
+                <span className="ml-auto flex w-fit flex-col items-center">
+                  <Image
+                    src="/images/kean-wordmark-blue.png"
+                    alt="Kean"
+                    width={908}
+                    height={320}
+                    preload
+                    className="h-[0.88em] w-auto shrink-0"
+                  />
+                  <span className="mt-1 font-mono text-[0.2em] font-semibold uppercase leading-none tracking-[0.3em] text-[#4AA3DF]">
+                    University
+                  </span>
+                </span>
+              </span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
-              WiCyS Kean is a community for anyone curious about security.
-              We run workshops, host industry speakers, compete in capture the
-              flag events, and connect members to scholarships and jobs. Open
-              to all majors, no experience required.
-            </p>
-            {meetings ? (
-              <p className="mt-5 inline-block rounded-lg bg-surface px-4 py-2.5 font-mono text-xs leading-relaxed tracking-wide text-brand-800">
-                General body meetings: {meetings}
-              </p>
-            ) : null}
-            <div className="mt-8 flex flex-wrap items-center gap-3.5">
-              <Link href="/join" className="btn-green">
+            <div className="mt-8 grid w-fit gap-3">
+              <Link href="/join" className="btn-green hero-cta">
                 Join the chapter
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/events" className="btn-outline">
-                See upcoming events
+              <Link href="/events" className="btn-outline-light hero-events-button hero-cta text-[13px]">
+                Upcoming events
+                <ArrowRight className="h-4 w-4" />
               </Link>
-            </div>
-          </div>
-
-          <div className="relative mx-auto w-full max-w-lg">
-            <div
-              aria-hidden
-              className="absolute -inset-6 rounded-[1.75rem] border border-brand-200/70 bg-surface"
-            />
-            <div className="relative overflow-hidden rounded-2xl border border-plum bg-plum shadow-xl shadow-brand-950/20">
-              <div className="flex items-center gap-1.5 border-b border-white/10 px-5 py-3.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-brand-400" />
-                <span className="h-2.5 w-2.5 rounded-full bg-accent-400" />
-                <span className="h-2.5 w-2.5 rounded-full bg-white/25" />
-                <span className="ml-3 font-mono text-[11px] uppercase tracking-[0.16em] text-brand-300">
-                  wicys@kean
-                </span>
-              </div>
-              <div className="space-y-3 px-6 py-7 font-mono text-sm leading-relaxed">
-                <p className="text-white">
-                  <span className="text-accent-400">$</span> whoami
-                </p>
-                <p className="text-brand-200">future-security-engineer</p>
-                <p className="text-white">
-                  <span className="text-accent-400">$</span> cat mission.txt
-                </p>
-                <p className="text-brand-200">community · workshops · opportunity</p>
-                <p className="text-white">
-                  <span className="text-accent-400">$</span> ./join_us.sh
-                  --open-to-all
-                </p>
-                <p className="text-accent-300">welcome aboard [OK]</p>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="container-site pb-4 pt-8">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {QUICK_LINKS.map(({ href, label, blurb, Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className="group rounded-xl border border-brand-100 bg-white p-5 transition-colors hover:border-brand-400 hover:bg-brand-50/50"
-            >
-              <div className="flex items-center justify-between">
-                <span className="grid h-10 w-10 place-items-center rounded-lg bg-brand-50 text-brand-700">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <ArrowUpRight className="h-4 w-4 text-brand-300 transition-colors group-hover:text-accent-600" />
-              </div>
-              <p className="mt-4 font-display font-bold tracking-tight text-ink">
-                {label}
-              </p>
-              <p className="mt-1 text-sm text-ink-soft">{blurb}</p>
-            </Link>
-          ))}
+      <section className="bg-plum py-10 sm:py-12">
+        <div className="container-site">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {QUICK_LINKS.map(({ href, label, blurb, Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className="group rounded-xl border border-brand-100 bg-white p-5 shadow-md shadow-brand-950/15 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-950/25"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="grid h-10 w-10 place-items-center rounded-lg bg-brand-50 text-brand-700">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <ArrowUpRight className="h-4 w-4 text-brand-300 transition-colors group-hover:text-accent-600" />
+                </div>
+                <p className="mt-4 font-display font-bold tracking-tight text-ink">
+                  {label}
+                </p>
+                <p className="mt-1 text-sm text-ink-soft">{blurb}</p>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -182,10 +180,40 @@ export default async function HomePage() {
                   </Link>
                 </>
               ) : (
-                <p className="mt-6 text-sm leading-relaxed text-ink-soft">
-                  New events are announced at meetings and on our Discord and
-                  Instagram. Check back soon.
-                </p>
+                <>
+                  <p className="mt-6 text-sm leading-relaxed text-ink-soft">
+                    New events are announced at meetings and on our Discord and
+                    Instagram. Check back soon.
+                  </p>
+                  <div className="mt-6 flex flex-col gap-3">
+                    {settings?.instagramUrl ? (
+                      <a
+                        href={settings.instagramUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-outline w-full"
+                      >
+                        <span className="grid w-full grid-cols-[1.25rem_1fr] items-center gap-2 text-left">
+                          <InstagramLogo className="h-5 w-5 shrink-0" />
+                          Follow us on Instagram
+                        </span>
+                      </a>
+                    ) : null}
+                    {settings?.discordUrl ? (
+                      <a
+                        href={settings.discordUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-green w-full"
+                      >
+                        <span className="grid w-full grid-cols-[1.25rem_1fr] items-center gap-2 text-left">
+                          <DiscordLogo className="h-5 w-5 shrink-0" />
+                          Join our Discord
+                        </span>
+                      </a>
+                    ) : null}
+                  </div>
+                </>
               )}
             </div>
 
@@ -207,7 +235,7 @@ export default async function HomePage() {
                       key={index}
                       className="flex items-start gap-2.5 text-sm text-ink-soft"
                     >
-                      <span className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-accent-600" />
+                      <span className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-accent-400" />
                       {point}
                     </li>
                   ))}
@@ -222,7 +250,7 @@ export default async function HomePage() {
               </h3>
               <p className="mt-3 flex-1 text-sm leading-relaxed text-brand-200">
                 {announcements?.sponsorshipBlurb ??
-                  'Support our students through funding, prizes, mentorship, and more.'}
+                  'Support our students through funding, prizes, speakers, and more.'}
               </p>
               <Link href="/sponsors" className="btn-outline-light mt-7 self-start">
                 Sponsorship opportunities
@@ -240,23 +268,28 @@ export default async function HomePage() {
             title="A supportive community built around security"
             lede="WiCyS Kean is a student chapter of Women in CyberSecurity, a national nonprofit dedicated to recruiting, retaining, and advancing women in the field. Everyone is welcome here. Our members come from every major and every skill level, united by curiosity about how the digital world works and how to protect it."
           />
-          <ul className="grid gap-x-8 gap-y-4 sm:grid-cols-2 self-center">
-            {WHAT_WE_DO.map((item) => (
-              <li key={item.label} className="flex items-start gap-2.5 text-sm text-ink-soft">
-                <span className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-accent-600" />
-                {item.label}
+          <ol className="mt-8 grid gap-x-8 gap-y-4 self-center sm:grid-cols-2 lg:mt-14">
+            {WHAT_WE_DO.map((item, index) => (
+              <li
+                key={item.label}
+                className="flex items-start gap-3 text-sm font-semibold text-ink-soft"
+              >
+                <span className="font-mono text-xs leading-6 text-accent-600">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span>{item.label}</span>
               </li>
             ))}
-            <li className="sm:col-span-2 pt-2">
+            <li className="flex justify-end pt-6 sm:col-span-2">
               <Link
                 href="/eboard"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 transition-colors hover:text-accent-700"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 underline underline-offset-6 transition-colors hover:text-accent-700"
               >
-                Meet the e-board behind it all
+                <span>Meet the Kean WiCyS Eboard</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </li>
-          </ul>
+          </ol>
         </div>
       </section>
 
@@ -272,19 +305,20 @@ export default async function HomePage() {
                 'The next WiCyS Kean CTF is currently being planned. Check back for dates and registration.'}
             </p>
             <div className="mt-8 flex flex-wrap gap-3.5">
-              <Link href="/ctf" className="btn bg-white text-plum hover:bg-brand-100">
+              <Link href="/ctf" className="btn-light">
                 CTF details
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link href="/join" className="btn-outline-light">
                 Get involved
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
           <div className="relative mx-auto hidden aspect-square w-full max-w-sm place-items-center rounded-full border border-brand-500/40 md:grid">
             <div aria-hidden className="absolute inset-6 rounded-full border border-brand-500/30" />
             <Flag className="h-16 w-16 text-accent-400" strokeWidth={1.5} />
-            <p className="absolute bottom-12 font-mono text-[11px] uppercase tracking-[0.22em] text-brand-300">
+            <p className="absolute bottom-12 font-mono text-[11px] uppercase tracking-[0.22em] text-brand-200">
               Status · In planning
             </p>
           </div>
@@ -327,7 +361,7 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      <section className="pb-24">
+      <section className="pb-28 pt-16 sm:pt-24">
         <div className="container-site">
           <div className="rounded-2xl border border-accent-200 bg-accent-50 px-7 py-12 text-center sm:px-12">
             <h2 className="mx-auto max-w-xl font-display text-3xl font-bold tracking-tight text-ink">
@@ -344,6 +378,7 @@ export default async function HomePage() {
               </Link>
               <Link href="/contact" className="btn-outline">
                 Contact us
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>

@@ -7,7 +7,9 @@ import { formatShortDate, eventTypeLabel } from '@/lib/format';
 
 export default function PastEventCard({ event }: { event: EventEntry }) {
   const photos = filterPhotos(event.photos);
-  const photo = photos.length > 0 ? photos[0] : null;
+  // No recap photos yet: show the flyer, anchored to its top where the title is.
+  const isFlyer = photos.length === 0 && Boolean(event.flyer);
+  const photo = photos.length > 0 ? photos[0] : (event.flyer ?? null);
 
   return (
     <Link
@@ -21,7 +23,7 @@ export default function PastEventCard({ event }: { event: EventEntry }) {
             alt=""
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            className={`object-cover transition-transform duration-300 group-hover:scale-[1.03] ${isFlyer ? 'object-top' : ''}`}
           />
         ) : (
           <div className="grid h-full place-items-center font-mono text-xs uppercase tracking-[0.16em] text-brand-400">
@@ -46,7 +48,7 @@ export default function PastEventCard({ event }: { event: EventEntry }) {
                 key={index}
                 className="flex items-start gap-2.5 text-sm text-ink-soft"
               >
-                <span className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-accent-600" />
+                <span className="mt-[7px] h-1.5 w-1.5 shrink-0 bg-accent-400" />
                 {highlight}
               </li>
             ))}

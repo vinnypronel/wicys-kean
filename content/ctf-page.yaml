@@ -1,9 +1,10 @@
-previousTitle: WiCyS Kean Capture the Flag
+previousTitle: Kean University Capture the Flag, March 2026
 overview: >-
-  PLACEHOLDER: Details from our most recent CTF will be published here,
-  including an event overview, participant count, challenge breakdown, and
-  highlights from the day.
-participantsNote: Participant count coming soon
+  On March 20, 2026, Kean University hosted a virtual Capture the Flag
+  competition designed to sharpen students' cybersecurity skills. The event
+  was free, beginner-friendly, and open to students from any institution, with
+  no prior experience required.
+participantsNote: Teams of three
 topics:
   - Web exploitation
   - Cryptography
@@ -12,7 +13,9 @@ topics:
   - Open source intelligence
   - Binary exploitation
 highlights:
-  - Challenge writeups and results will be posted after our next CTF
+  - Free and beginner-friendly, open to students from any institution
+  - Teams of three competing for prizes
+  - Guest speakers from industry
 plannedBlurb: >-
   The next WiCyS Kean CTF is currently being planned. It will be a
   beginner-friendly, jeopardy-style competition open to all Kean students,
@@ -33,5 +36,4 @@ participateSteps:
   - Form a team of up to four students, or register solo and we will match you
   - No experience required, we run a prep workshop before the event
 photos:
-  - /images/placeholders/ph-wide.svg
-  - /images/placeholders/ph-1.svg
+  - /images/uploads/capture-the-flag-2026/flyer.jpg

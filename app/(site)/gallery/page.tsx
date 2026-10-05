@@ -20,10 +20,11 @@ export default async function GalleryPage() {
 
   return (
     <>
-      <section className="border-b border-brand-100 bg-surface">
-        <div className="container-site py-16 sm:py-20">
+      <section className="page-hero">
+        <div className="container-site py-16 sm:py-24">
           <SectionHeading
             level="h1"
+            tone="dark"
             kicker="Gallery"
             title="Chapter life in pictures"
             lede="Moments from our meetings, workshops, competitions, and conferences. Filter by academic year or type of event, and tap any photo to view it full size."

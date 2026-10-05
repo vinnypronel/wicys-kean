@@ -19,10 +19,10 @@ export default config({
   ui: {
     brand: { name: 'WiCyS Kean' },
     navigation: {
-      People: ['eboardMembers'],
+      People: ['eboardMembers', 'scholars', 'alumni'],
       Activities: ['events', 'galleryAlbums', 'resourceLinks'],
-      Sponsors: ['sponsors', 'sponsorPage'],
-      Content: ['homeAnnouncements', 'ctfPage', 'siteSettings'],
+      Sponsors: ['sponsors', 'sponsorPage', 'donatePage'],
+      Content: ['homeAnnouncements', 'getInvolvedPage', 'ctfPage', 'siteSettings'],
     },
   },
   collections: {
@@ -57,6 +57,74 @@ export default config({
           label: 'Display order',
           defaultValue: 99,
         }),
+      },
+    }),
+    scholars: collection({
+      label: 'Scholarship recipients',
+      slugField: 'name',
+      path: 'content/scholars/*',
+      schema: {
+        name: fields.slug({
+          name: { label: 'Full name', validation: { isRequired: true } },
+          slug: { label: 'URL slug' },
+        }),
+        award: fields.text({
+          label: 'Scholarship or award',
+          description: 'For example: WiCyS 2027 Conference Scholarship',
+          validation: { isRequired: true },
+        }),
+        year: fields.text({
+          label: 'Year',
+          description: 'For example: 2027',
+          validation: { isRequired: true },
+        }),
+        photo: fields.image({
+          label: 'Photo',
+          description: 'A square headshot works best. ' + photoHint,
+          directory: uploadDirectory,
+          publicPath: uploadPublicPath,
+        }),
+        note: fields.text({
+          label: 'Short note (optional)',
+          description: 'For example: major, or what the award covered.',
+          multiline: true,
+        }),
+        linkedinUrl: fields.url({ label: 'LinkedIn URL' }),
+        order: fields.integer({ label: 'Display order', defaultValue: 99 }),
+      },
+    }),
+    alumni: collection({
+      label: 'Alumni',
+      slugField: 'name',
+      path: 'content/alumni/*',
+      schema: {
+        name: fields.slug({
+          name: { label: 'Full name', validation: { isRequired: true } },
+          slug: { label: 'URL slug' },
+        }),
+        pastRole: fields.text({
+          label: 'Role in WiCyS Kean (optional)',
+          description: 'For example: President. Leave blank if they were a member.',
+        }),
+        years: fields.text({
+          label: 'Years on the board',
+          description: 'For example: 2023-2025',
+        }),
+        currentTitle: fields.text({
+          label: 'Current job title',
+          description: 'For example: Security Analyst',
+        }),
+        currentCompany: fields.text({
+          label: 'Current company or school',
+        }),
+        photo: fields.image({
+          label: 'Photo',
+          description: 'A square headshot works best. ' + photoHint,
+          directory: uploadDirectory,
+          publicPath: uploadPublicPath,
+        }),
+        linkedinUrl: fields.url({ label: 'LinkedIn URL' }),
+        order: fields.integer({ label: 'Display order', defaultValue: 99 }),
       },
     }),
     events: collection({
@@ -167,6 +235,8 @@ export default config({
             { label: 'Conferences', value: 'conferences' },
             { label: 'Speakers and networking', value: 'networking' },
             { label: 'Socials', value: 'socials' },
+            { label: 'Chapter events', value: 'events' },
+            { label: 'Research', value: 'research' },
             { label: 'Other', value: 'other' },
           ],
           defaultValue: 'meetings',
@@ -304,6 +374,66 @@ export default config({
           directory: fileDirectory,
           publicPath: filePublicPath,
         }),
+      },
+    }),
+    donatePage: singleton({
+      label: 'Donate page',
+      path: 'content/donate-page',
+      schema: {
+        intro: fields.text({ label: 'Intro text', multiline: true }),
+        stripeUrl: fields.url({
+          label: 'Online donation link',
+          description:
+            'Any secure giving page: a Kean University giving page set up for WiCyS, or a Stripe Payment Link. Leave blank to hide.',
+        }),
+        venmoHandle: fields.text({
+          label: 'Venmo username',
+          description: 'Without the @. Leave blank to hide.',
+        }),
+        cashAppTag: fields.text({
+          label: 'Cash App $cashtag',
+          description: 'Without the $. Leave blank to hide.',
+        }),
+        zelleContact: fields.text({
+          label: 'Zelle email or phone',
+          description: 'Leave blank to hide.',
+        }),
+        note: fields.text({
+          label: 'Note under the payment options (optional)',
+          description:
+            'For example, how donations are handled through Kean, or whether they are tax-deductible. Only add this once confirmed.',
+          multiline: true,
+        }),
+      },
+    }),
+    getInvolvedPage: singleton({
+      label: 'Get involved page',
+      path: 'content/get-involved-page',
+      schema: {
+        intro: fields.text({ label: 'Intro text', multiline: true }),
+        cards: fields.array(
+          fields.object({
+            title: fields.text({ label: 'Title' }),
+            body: fields.text({ label: 'Description', multiline: true }),
+            points: fields.array(fields.text({ label: 'Point' }), {
+              label: 'Bullet points (optional)',
+              itemLabel(props) {
+                return props.value ?? 'Point';
+              },
+            }),
+            ctaLabel: fields.text({ label: 'Button text' }),
+            ctaUrl: fields.text({
+              label: 'Button link',
+              description: 'A page on this site like /events, or a full URL.',
+            }),
+          }),
+          {
+            label: 'Ways to get involved',
+            itemLabel(props) {
+              return props.fields.title.value || 'Card';
+            },
+          }
+        ),
       },
     }),
     homeAnnouncements: singleton({

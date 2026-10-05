@@ -45,7 +45,7 @@ function FilterRow({
               type="button"
               onClick={() => onChange(option.value)}
               aria-pressed={active}
-              className={`relative py-1 text-sm font-medium transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:bg-accent-600 after:transition-transform after:duration-300 ${
+              className={`relative py-1 text-sm font-medium transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-full after:origin-right hover:after:origin-left after:bg-accent-400 after:transition-transform after:duration-300 ${
                 active
                   ? 'text-brand-700 after:scale-x-100'
                   : 'text-ink-soft after:scale-x-0 hover:text-brand-700'
@@ -106,7 +106,7 @@ export default function GalleryBrowser({ albums }: { albums: BrowserAlbum[] }) {
         </div>
       ) : null}
 
-      <div className="space-y-20">
+      <div data-reveal-group className="space-y-20">
         {visible.map((album) => (
           <div key={album.slug} id={album.slug} className="scroll-mt-24">
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-700">
