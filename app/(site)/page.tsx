@@ -233,7 +233,7 @@ export default async function HomePage() {
             {WHAT_WE_DO.map((item, index) => (
               <li
                 key={item.label}
-                className="flex items-start gap-3 text-sm font-semibold text-ink-soft"
+                className="flex items-start gap-3 rounded-xl border border-brand-100 bg-white p-4 text-sm font-semibold text-ink-soft shadow-sm shadow-brand-950/5 transition-colors hover:border-brand-300"
               >
                 <span className="font-mono text-xs leading-6 text-accent-600">
                   {String(index + 1).padStart(2, '0')}
