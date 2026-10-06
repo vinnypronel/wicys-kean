@@ -211,21 +211,21 @@ export default function SiteSearch({
                         tabIndex={-1}
                         onMouseEnter={() => setActive(i)}
                         onClick={() => go(item.href)}
-                        className={`group flex w-full items-center gap-4 rounded-lg px-3 py-2.5 text-left transition-colors ${
+                        className={`group relative flex w-full items-center gap-4 overflow-hidden rounded-lg px-3 py-2.5 text-left transition-colors duration-200 before:absolute before:inset-y-0 before:left-0 before:w-1 before:origin-top before:scale-y-0 before:bg-accent-400 before:transition-transform before:duration-200 hover:bg-brand-100 hover:before:scale-y-100 ${
                           i === active ? 'bg-brand-50' : ''
                         }`}
                       >
                         <span className="w-20 shrink-0 font-mono text-[11px] uppercase tracking-[0.14em] text-accent-700">
                           {item.type}
                         </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="block truncate text-sm font-semibold text-ink">{item.title}</span>
+                        <span className="min-w-0 flex-1 transition-transform duration-200 group-hover:translate-x-1">
+                          <span className="block truncate text-sm font-semibold text-ink transition-colors duration-200 group-hover:text-brand-700">{item.title}</span>
                           {item.description ? (
                             <span className="block truncate text-xs text-ink-soft">{item.description}</span>
                           ) : null}
                         </span>
                         {i === active ? (
-                          <CornerDownLeft className="hidden h-4 w-4 shrink-0 text-brand-400 sm:block" />
+                          <CornerDownLeft className="hidden h-4 w-4 shrink-0 text-brand-400 transition-colors duration-200 group-hover:text-brand-700 sm:block" />
                         ) : (
                           <ArrowRight className="h-4 w-4 shrink-0 text-brand-300 sm:hidden" />
                         )}

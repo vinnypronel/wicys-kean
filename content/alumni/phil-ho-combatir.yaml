@@ -1,5 +1,11 @@
 name: Phil Ho Combatir
 photo: /images/uploads/phil-ho-combatir/photo.jpg
-currentTitle: MEng in Computer Science, Class of 2028
-currentCompany: Cornell University
-order: 4
+currentTitle: 'MEng in Computer Science, Class of 2028'
+currentCompany: Cornell Tech
+highlights:
+  - 'Software Engineering Intern at NASA, building AI for guidance and navigation'
+  - 'First place in the GMiS Research Poster Competition in 2024 and 2025'
+  - 'Harvard Business School Summer Venture in Management Program, 2026'
+  - 'Worked at Apple as a Technical Specialist and Product Specialist'
+linkedinUrl: https://www.linkedin.com/in/philhocombatir/
+order: 1

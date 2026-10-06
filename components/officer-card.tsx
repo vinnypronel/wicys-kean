@@ -14,7 +14,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 
-import { LinkedinGlyph } from '@/components/brand-icons';
+import { LinkedinLogo } from '@/components/brand-icons';
 
 export type OfficerProps = {
   name: string;
@@ -121,10 +121,10 @@ export default function OfficerCard({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${name} on LinkedIn`}
-          className={`relative mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-medium transition-colors ${styles.link}`}
+          className={`relative mt-auto inline-flex items-center gap-2 self-start pt-4 text-sm font-semibold transition-colors ${styles.link}`}
         >
-          <LinkedinGlyph className="h-4 w-4" />
-          LinkedIn
+          <LinkedinLogo className="h-5 w-5" />
+          <span className="hover-underline">LinkedIn</span>
         </a>
       ) : null}
     </article>

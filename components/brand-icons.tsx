@@ -120,3 +120,17 @@ export function OutlookLogo({ className }: IconProps) {
     </svg>
   );
 }
+
+export function LinkedinLogo({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden className={className}>
+      <rect width="24" height="24" rx="4" fill="#0A66C2" />
+      <circle cx="7.1" cy="7.2" r="1.75" fill="#ffffff" />
+      <rect x="5.6" y="10" width="3" height="8.5" fill="#ffffff" />
+      <path
+        fill="#ffffff"
+        d="M10.6 10h2.9v1.3c.5-.9 1.6-1.6 3-1.6 2.9 0 3.5 1.9 3.5 4.4v4.4h-3v-3.9c0-1.1-.1-2.3-1.5-2.3s-1.8 1-1.8 2.2v4h-3.1z"
+      />
+    </svg>
+  );
+}
