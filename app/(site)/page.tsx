@@ -1,13 +1,5 @@
 import Image from 'next/image';
-import {
-  ArrowRight,
-  ArrowUpRight,
-  BookOpen,
-  CalendarDays,
-  Flag,
-  Mail,
-  UserPlus,
-} from 'lucide-react';
+import { ArrowRight, Flag } from 'lucide-react';
 import Link from 'next/link';
 
 import { DiscordLogo, InstagramLogo } from '@/components/brand-icons';
@@ -21,13 +13,6 @@ import {
   getUpcomingEvents,
 } from '@/lib/content';
 import { formatShortDate } from '@/lib/format';
-
-const QUICK_LINKS = [
-  { href: '/join', label: 'Join WiCyS', blurb: 'Become a member in minutes', Icon: UserPlus },
-  { href: '/events', label: 'Events', blurb: 'Meetings, workshops, and more', Icon: CalendarDays },
-  { href: '/resources', label: 'Resources', blurb: 'Learn, practice, get hired', Icon: BookOpen },
-  { href: '/contact', label: 'Contact', blurb: 'Reach the chapter anytime', Icon: Mail },
-];
 
 const WHAT_WE_DO = [
   { label: 'Hands-on technical workshops' },
@@ -115,31 +100,6 @@ export default async function HomePage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-plum py-10 sm:py-12">
-        <div className="container-site">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {QUICK_LINKS.map(({ href, label, blurb, Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                className="group rounded-xl border border-brand-100 bg-white p-5 shadow-md shadow-brand-950/15 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-950/25"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="grid h-10 w-10 place-items-center rounded-lg bg-brand-50 text-brand-700">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <ArrowUpRight className="h-4 w-4 text-brand-300 transition-colors group-hover:text-accent-600" />
-                </div>
-                <p className="mt-4 font-display font-bold tracking-tight text-ink">
-                  {label}
-                </p>
-                <p className="mt-1 text-sm text-ink-soft">{blurb}</p>
-              </Link>
-            ))}
           </div>
         </div>
       </section>
