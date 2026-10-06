@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ArrowRight, Flag } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { DiscordLogo, InstagramLogo } from '@/components/brand-icons';
@@ -276,12 +276,14 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="relative mx-auto hidden aspect-square w-full max-w-sm place-items-center rounded-full border border-brand-500/40 md:grid">
-            <div aria-hidden className="absolute inset-6 rounded-full border border-brand-500/30" />
-            <Flag className="h-16 w-16 text-accent-400" strokeWidth={1.5} />
-            <p className="absolute bottom-12 font-mono text-[11px] uppercase tracking-[0.22em] text-brand-200">
-              Status · In planning
-            </p>
+          <div className="relative mx-auto hidden w-full max-w-sm overflow-hidden rounded-xl border border-brand-500/40 shadow-lg shadow-brand-950/30 md:block">
+            <Image
+              src="/images/uploads/capture-the-flag-2026/flyer.jpg"
+              alt="Kean University Capture The Flag — March 20th, 2026 flyer"
+              width={754}
+              height={1000}
+              className="h-auto w-full"
+            />
           </div>
         </div>
       </section>
