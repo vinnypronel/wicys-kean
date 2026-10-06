@@ -265,6 +265,35 @@ export default async function HomePage() {
               {ctf?.plannedBlurb ??
                 'The next WiCyS Kean CTF is currently being planned. Check back for dates and registration.'}
             </p>
+
+            <div className="mt-8 max-w-xl rounded-xl border border-brand-500/40 bg-brand-950/30 p-6">
+              <p className="kicker kicker-light">Last year&rsquo;s CTF</p>
+              <dl className="mt-4 space-y-4 text-sm leading-relaxed text-brand-100">
+                <div>
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent-400">
+                    Sponsor
+                  </dt>
+                  <dd className="mt-1 font-semibold text-white">Abitronix</dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent-400">
+                    Guest speakers
+                  </dt>
+                  <dd className="mt-1 space-y-2">
+                    <p>
+                      <span className="font-semibold text-white">Kimberly Opara</span>
+                      {' '}&mdash; Kean alum and Cloud Engineer at Oracle
+                    </p>
+                    <p>
+                      <span className="font-semibold text-white">Christina Morillo</span>
+                      {' '}&mdash; Senior Director of Information Technology at the
+                      New York Football Giants
+                    </p>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
             <div className="mt-8 flex flex-wrap gap-3.5">
               <Link href="/ctf" className="btn-light">
                 CTF details
