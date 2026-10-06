@@ -1,5 +1,11 @@
 name: Diana Medina
 photo: /images/uploads/diana-medina/photo.jpg
-currentTitle: MS in Cybersecurity, GEM University Fellow
-currentCompany: New York University
+currentTitle: 'MS in Cybersecurity, Class of 2028'
+currentCompany: NYU Tandon School of Engineering
+highlights:
+  - '2026 GEM University Fellow, sponsored by NYU Tandon Engineering'
+  - 'Graduated summa cum laude from Kean with a BS in Computer Science'
+  - 'Break Through Tech AI Fellow, selected from more than 3,000 applicants'
+  - 'Undergraduate researcher at Kean and CRA UR2PhD research trainee'
+linkedinUrl: https://www.linkedin.com/in/diana-medina99/
 order: 3

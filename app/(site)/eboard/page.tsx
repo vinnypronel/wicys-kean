@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Mail } from 'lucide-react';
 
+import AlumniCard from '@/components/alumni-card';
 import OfficerCard from '@/components/officer-card';
 import PersonCard from '@/components/person-card';
 import SectionHeading from '@/components/section-heading';
@@ -27,14 +29,45 @@ export default async function EboardPage() {
 
   return (
     <>
-      <section className="page-hero">
-        <div className="container-site py-16 sm:py-24">
-          <SectionHeading
-            level="h1"
-            tone="dark"
-            kicker="Leadership"
-            title="Meet the executive board"
-            lede="The students who keep WiCyS Kean running."
+      <section className="page-hero relative overflow-hidden">
+        <div className="container-site flex items-center py-16 sm:py-20 lg:min-h-[38rem]">
+          <div className="lg:w-1/2 lg:pr-12">
+            <SectionHeading
+              level="h1"
+              tone="dark"
+              kicker="Leadership"
+              title="Meet the executive board"
+              lede="The students who keep WiCyS Kean running."
+            />
+          </div>
+        </div>
+        {/* The photo fills the right half on desktop, with a purple margin on
+            its top, bottom, and right. */}
+        <div className="relative aspect-[4/3] w-full lg:absolute lg:inset-y-8 lg:right-8 lg:aspect-auto lg:w-[calc(50%-2rem)]">
+          <Image
+            src="/images/eboard-group.jpg"
+            alt="WiCyS Kean members and e-board standing together for a group photo"
+            fill
+            preload
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover"
+          />
+          {/* Green corner brackets on all four corners. */}
+          <span
+            aria-hidden
+            className="absolute left-0 top-0 h-14 w-14 border-l-[5px] border-t-[5px] border-accent-400 sm:h-16 sm:w-16"
+          />
+          <span
+            aria-hidden
+            className="absolute right-0 top-0 h-14 w-14 border-r-[5px] border-t-[5px] border-accent-400 sm:h-16 sm:w-16"
+          />
+          <span
+            aria-hidden
+            className="absolute bottom-0 left-0 h-14 w-14 border-b-[5px] border-l-[5px] border-accent-400 sm:h-16 sm:w-16"
+          />
+          <span
+            aria-hidden
+            className="absolute bottom-0 right-0 h-14 w-14 border-b-[5px] border-r-[5px] border-accent-400 sm:h-16 sm:w-16"
           />
         </div>
       </section>
@@ -90,17 +123,19 @@ export default async function EboardPage() {
               <SectionHeading
                 kicker="Alumni"
                 title="Where our alumni are now"
-                lede="WiCyS Kean alumni and what they have gone on to do."
+                lede="WiCyS Kean members go on to industry roles, competitive internships, and graduate programs. This is where the community can take you."
               />
-              <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="mt-10 grid gap-6 lg:grid-cols-2">
                 {alumni.map((alum) => (
-                  <PersonCard
+                  <AlumniCard
                     key={alum.slug}
                     name={alum.name}
                     photo={alum.photo}
-                    label={[alum.pastRole, alum.years].filter(Boolean).join(', ') || undefined}
-                    title={alum.currentTitle}
-                    subtitle={alum.currentCompany}
+                    pastRole={alum.pastRole}
+                    years={alum.years}
+                    currentTitle={alum.currentTitle}
+                    currentCompany={alum.currentCompany}
+                    highlights={alum.highlights}
                     linkedinUrl={alum.linkedinUrl}
                   />
                 ))}

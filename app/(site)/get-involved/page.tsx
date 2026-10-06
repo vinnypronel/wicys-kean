@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, Check, HandHeart, Lightbulb, Sparkles, Users } from 'lucide-react';
+import { ArrowRight, Check, DollarSign, HandHeart, Lightbulb, Users } from 'lucide-react';
 
 import SectionHeading from '@/components/section-heading';
 import { getGetInvolvedPage } from '@/lib/content';
@@ -154,7 +154,7 @@ export default async function GetInvolvedPage() {
             </div>
             <div className="flex flex-wrap gap-3 lg:justify-end">
               <Link href="/donate" className="btn-green">
-                <Sparkles className="h-4 w-4" />
+                <DollarSign className="h-4 w-4" />
                 Donate
               </Link>
               <Link href="/join" className="btn-outline">

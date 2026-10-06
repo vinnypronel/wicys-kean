@@ -123,6 +123,14 @@ export default config({
           directory: uploadDirectory,
           publicPath: uploadPublicPath,
         }),
+        highlights: fields.array(fields.text({ label: 'Highlight' }), {
+          label: 'Highlights (internships, awards, programs)',
+          description:
+            'Short lines shown under "Along the way". For example: Software Engineering Intern at NASA.',
+          itemLabel(props) {
+            return props.value ?? 'Highlight';
+          },
+        }),
         linkedinUrl: fields.url({ label: 'LinkedIn URL' }),
         order: fields.integer({ label: 'Display order', defaultValue: 99 }),
       },

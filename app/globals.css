@@ -44,6 +44,14 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Tailwind leaves buttons with the arrow cursor. Anything clickable gets the
+   hand so it reads as clickable. */
+button:not(:disabled),
+[role="button"],
+summary {
+  cursor: pointer;
+}
+
 ::selection {
   background: var(--color-brand-200);
   color: var(--color-brand-950);
@@ -537,6 +545,12 @@ html.lenis body {
     color: #ffffff;
   }
 
+  /* On a purple background the purple hover would vanish, so go white. */
+  :is(.bg-plum, .page-hero) .btn-green:hover {
+    background-color: #ffffff;
+    color: var(--color-plum);
+  }
+
   .btn-outline:hover {
     background-color: var(--color-plum);
     border-color: var(--color-plum);
@@ -558,7 +572,7 @@ html.lenis body {
     animation: btn-nudge 0.6s ease-in-out infinite alternate;
   }
 
-  :is(.btn, .btn-green, .btn-outline, .btn-outline-light, .btn-light):hover > :is(.lucide-mail, .lucide-calendar-plus) {
+  :is(.btn, .btn-green, .btn-outline, .btn-outline-light, .btn-light):hover > :is(.lucide-mail, .lucide-calendar-plus, .lucide-dollar-sign) {
     animation: btn-ring 0.6s ease-in-out infinite alternate;
   }
 
@@ -766,5 +780,59 @@ a:focus-visible .hover-underline::after {
   .site-search-panel.open,
   .site-search-backdrop {
     transition: none;
+  }
+}
+
+/* Page transition, fade mode (components/route-transition.tsx). The old page
+   fades out, the new one fades in while rising, and a thin green line runs
+   across the top of the screen. */
+html[data-route="out"] main {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+html[data-route="in"] main {
+  animation: route-page-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes route-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.route-line {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.route-line-enter {
+  opacity: 1;
+  transform: scaleX(0.8);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.route-line-exit {
+  opacity: 0;
+  transform: scaleX(1);
+  transition:
+    transform 0.18s ease-out,
+    opacity 0.22s ease 0.18s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-route] main {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
   }
 }

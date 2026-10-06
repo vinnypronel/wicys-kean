@@ -55,9 +55,6 @@ export default async function ContactPage({
     settings?.cougarlinkUrl
       ? { Icon: MapPin, label: 'Kean CougarLink', value: 'WiCyS on Cougar Link', href: settings.cougarlinkUrl, imgSrc: '/images/kean-k.png' }
       : null,
-    settings?.nationalUrl
-      ? { Icon: ArrowUpRight, label: 'National WiCyS', value: 'wicys.org', href: settings.nationalUrl }
-      : null,
   ].filter((channel): channel is NonNullable<typeof channel> => channel !== null);
 
   return (
@@ -119,7 +116,7 @@ export default async function ContactPage({
               </p>
             )}
 
-            <div className="mt-10">
+            <div className="mt-6">
               <ContactForm defaultTopic={typeof topic === 'string' ? topic : undefined} />
             </div>
           </div>
@@ -154,7 +151,7 @@ export default async function ContactPage({
             {meetings ? (
               <div className="rounded-xl border border-brand-100 bg-white p-7">
                 <h3 className="font-display text-lg font-bold tracking-tight text-ink">
-                  General body meetings
+                  Meetings &amp; Events
                 </h3>
                 <p className="mt-2.5 font-mono text-xs leading-relaxed tracking-wide text-brand-800">
                   {meetings}
@@ -165,6 +162,27 @@ export default async function ContactPage({
                   </p>
                 ) : null}
               </div>
+            ) : null}
+
+            {settings?.nationalUrl ? (
+              <a
+                href={settings.nationalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 rounded-xl border border-brand-100 bg-white p-5 transition-colors hover:border-brand-400 hover:bg-brand-50/40"
+              >
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-700">
+                  <ArrowUpRight className="h-5 w-5" />
+                </span>
+                <span>
+                  <span className="block font-mono text-[11px] uppercase tracking-[0.14em] text-accent-700">
+                    National WiCyS
+                  </span>
+                  <span className="mt-0.5 block text-sm font-medium text-ink">
+                    wicys.org
+                  </span>
+                </span>
+              </a>
             ) : null}
           </div>
         </div>

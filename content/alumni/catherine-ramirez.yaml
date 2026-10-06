@@ -1,5 +1,11 @@
 name: Catherine Ramirez
 photo: /images/uploads/catherine-ramirez/photo.jpg
-currentTitle: Associate Endpoint Administrator
+currentTitle: 'Associate Endpoint Administrator'
 currentCompany: MTF Biologics
-order: 1
+highlights:
+  - 'Joined MTF Biologics in 2025 as an IT Intern supporting IT operations'
+  - 'NSF S-STEM Scholar, a National Science Foundation STEM scholarship'
+  - 'Member of Upsilon Pi Epsilon, the international computing honor society'
+  - 'CAHSI-CRA Scholar, conducting research under Dr. Navya Kollapally'
+linkedinUrl: https://www.linkedin.com/in/catherine-ramirez04/
+order: 4

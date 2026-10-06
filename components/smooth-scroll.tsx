@@ -3,7 +3,7 @@
 import Lenis from 'lenis';
 import { useEffect, useRef, type ReactNode } from 'react';
 
-const SCROLLBAR_IDLE_MS = 4500;
+const SCROLLBAR_IDLE_MS = 2250;
 const SCROLLBAR_EVENT = 'site-scrollbar-scroll';
 
 export default function SmoothScrollProvider({
