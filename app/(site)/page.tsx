@@ -41,7 +41,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="relative flex min-h-[70vh] items-center overflow-hidden bg-plum">
+      <section className="sticky top-0 z-0 flex h-screen items-center overflow-hidden bg-plum">
         <video
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover [filter:saturate(0.62)_brightness(0.82)_contrast(1.06)]"
@@ -104,6 +104,7 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <div className="relative z-10 bg-surface">
       <section className="bg-surface py-20">
         <div className="container-site">
           <SectionHeading
@@ -344,6 +345,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      </div>
     </>
   );
 }
