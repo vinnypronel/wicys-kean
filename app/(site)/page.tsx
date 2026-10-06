@@ -41,7 +41,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="relative flex min-h-screen items-center overflow-hidden bg-plum">
+      <section className="relative flex min-h-[70vh] items-center overflow-hidden bg-plum">
         <video
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover [filter:saturate(0.62)_brightness(0.82)_contrast(1.06)]"
