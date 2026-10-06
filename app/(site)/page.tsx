@@ -276,14 +276,17 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="relative mx-auto hidden w-full max-w-sm overflow-hidden rounded-xl border border-brand-500/40 shadow-lg shadow-brand-950/30 md:block">
-            <Image
-              src="/images/uploads/capture-the-flag-2026/flyer.jpg"
-              alt="Kean University Capture The Flag — March 20th, 2026 flyer"
-              width={754}
-              height={1000}
-              className="h-auto w-full"
-            />
+          <div className="mx-auto hidden w-full max-w-sm md:block">
+            <p className="kicker kicker-light mb-3">The Last Annual CTF:</p>
+            <div className="relative overflow-hidden rounded-xl border border-brand-500/40 shadow-lg shadow-brand-950/30">
+              <Image
+                src="/images/uploads/capture-the-flag-2026/flyer.jpg"
+                alt="Kean University Capture The Flag — March 20th, 2026 flyer"
+                width={754}
+                height={1000}
+                className="h-auto w-full"
+              />
+            </div>
           </div>
         </div>
       </section>
