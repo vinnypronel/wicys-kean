@@ -35,8 +35,8 @@ jobs:
             echo "Nothing to optimize."
             exit 0
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "Vinnypronel"
+          git config user.email "pronelv@kean.edu"
           git add public/images/uploads
           git commit -m "Optimize uploaded images"
           git pull --rebase
