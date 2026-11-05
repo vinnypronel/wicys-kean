@@ -15,6 +15,7 @@ import {
 } from '@/components/brand-icons';
 
 import ContactForm from '@/components/contact-form';
+import HeroPhoto from '@/components/hero-photo';
 import SectionHeading from '@/components/section-heading';
 import { getSiteSettings } from '@/lib/content';
 import { meetingSummary } from '@/lib/format';
@@ -60,13 +61,19 @@ export default async function ContactPage({
   return (
     <>
       <section className="page-hero">
-        <div className="container-site py-16 sm:py-24">
-          <SectionHeading
-            level="h1"
-            tone="dark"
-            kicker="Contact"
-            title="Say hello"
-            lede="Questions about joining, events, or sponsorships? Send us a message below, or reach us by email or Discord."
+        <div className="hero-split hero-split-feature">
+          <div>
+            <SectionHeading
+              level="h1"
+              tone="dark"
+              title="Say hello!"
+              lede="Questions about joining, events, or sponsorships? Send us a message below, or reach us by email or Discord."
+            />
+          </div>
+          <HeroPhoto
+            large
+            src="/images/uploads/chapter-events/photos/2.jpg"
+            alt="WiCyS Kean members smiling together at a technology event"
           />
         </div>
       </section>

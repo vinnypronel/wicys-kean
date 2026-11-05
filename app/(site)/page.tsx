@@ -1,8 +1,19 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import {
+  ArrowRight,
+  FileText,
+  Flag,
+  Handshake,
+  Mic,
+  Plane,
+  Wrench,
+} from 'lucide-react';
 import Link from 'next/link';
 
 import { DiscordLogo, InstagramLogo } from '@/components/brand-icons';
+import HeroVideo from '@/components/hero-video';
+import MeetingCard from '@/components/meeting-card';
 import SectionHeading from '@/components/section-heading';
 import {
   filterPhotos,
@@ -12,18 +23,39 @@ import {
   getSiteSettings,
   getUpcomingEvents,
 } from '@/lib/content';
-import { formatShortDate } from '@/lib/format';
+import { formatShortDate, meetingSummary } from '@/lib/format';
 
 const WHAT_WE_DO = [
-  { label: 'Hands-on technical workshops' },
-  { label: 'Guest speakers from industry' },
-  { label: 'Annual Capture the Flag event' },
-  { label: 'Conference trips and scholarships' },
-  { label: 'Resume and interview prep' },
-  { label: 'Networking with recruiters and alumni' },
+  { label: 'Hands-on technical workshops', Icon: Wrench },
+  { label: 'Guest speakers from industry', Icon: Mic },
+  { label: 'Annual Capture the Flag event', Icon: Flag },
+  { label: 'Conference trips and scholarships', Icon: Plane },
+  { label: 'Resume and interview prep', Icon: FileText },
+  { label: 'Networking with recruiters and alumni', Icon: Handshake },
+];
+
+// The six boxes alternate between the two brand colors, like the officer
+// cards on the E-Board page.
+const WHAT_WE_DO_TONES = [
+  {
+    card: 'border-brand-200 bg-brand-100 hover:border-brand-600 hover:ring-1 hover:ring-brand-600',
+    chip: 'bg-brand-600 text-white',
+    ghost: 'text-brand-600',
+  },
+  {
+    card: 'border-accent-300 bg-accent-100 hover:border-accent-500 hover:ring-1 hover:ring-accent-500',
+    chip: 'bg-accent-400 text-black',
+    ghost: 'text-accent-600',
+  },
 ];
 
 export const revalidate = 3600;
+
+// The home page's own description for search results and link previews.
+export const metadata: Metadata = {
+  description:
+    'WiCyS Kean is the Kean University student chapter of Women in CyberSecurity. Free to join for every major and skill level, with workshops, guest speakers, a Capture the Flag competition, and conference trips.',
+};
 
 export default async function HomePage() {
   const [settings, announcements, upcoming, ctf, albums] = await Promise.all([
@@ -42,17 +74,13 @@ export default async function HomePage() {
   return (
     <>
       <section className="sticky top-0 z-0 flex h-screen items-center overflow-hidden bg-plum">
-        <video
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover [filter:saturate(0.62)_brightness(0.82)_contrast(1.06)]"
-          autoPlay
-          loop
-          muted
-          playsInline
+        {/* Phones, and anyone who has asked for less motion, keep the still
+            poster, so the 2MB video is never downloaded for them. */}
+        <HeroVideo
+          src="/videos/kean-hero-directional-v3.mp4"
           poster="/images/kean-hero-muted.jpg"
-        >
-          <source src="/videos/kean-hero-directional-v3.mp4" type="video/mp4" />
-        </video>
+          className="absolute inset-0 h-full w-full object-cover [filter:saturate(0.62)_brightness(0.82)_contrast(1.06)]"
+        />
         <div
           aria-hidden
           className="absolute inset-0 bg-gradient-to-r from-black/75 via-brand-950/45 to-black/20"
@@ -91,33 +119,60 @@ export default async function HomePage() {
               </span>
             </h1>
             <div className="mt-8 grid w-fit gap-3">
-              <Link href="/join" className="btn-green hero-cta">
-                Join the chapter
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link href="/events" className="btn-outline-light hero-events-button hero-cta text-[13px]">
-                Upcoming events
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              <span className="relative inline-flex">
+                <span aria-hidden className="btn-green hero-cta invisible">
+                  Join the chapter
+                </span>
+                <Link href="/get-involved#join" className="btn-green hero-cta hero-cta-live">
+                  Join the chapter
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </span>
+              <span className="relative inline-flex">
+                <span
+                  aria-hidden
+                  className="btn-outline-light hero-cta invisible text-[13px]"
+                >
+                  Upcoming events
+                </span>
+                <Link
+                  href="/events"
+                  className="btn-outline-light hero-events-button hero-cta hero-cta-live text-[13px]"
+                >
+                  Upcoming events
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </span>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="relative z-10 bg-surface">
+      <div className="page-rise relative z-10 bg-surface">
       <section className="bg-surface py-20">
         <div className="container-site">
-          <SectionHeading
-            kicker="This semester"
-            title="What we are working on"
-            lede="Announcements from the chapter, updated by the e-board throughout the semester."
-          />
+          <div className="flex items-start justify-between gap-6 sm:gap-8">
+            <SectionHeading
+              kicker="This semester"
+              title="What we are working on"
+              lede="Announcements from the chapter, updated by the e-board throughout the semester."
+            />
+            <div className="shrink-0 self-start pt-1 sm:pt-2">
+              <Image
+                src="/images/kean-seal.png"
+                alt="Kean University Seal"
+                width={128}
+                height={128}
+                className="h-20 w-20 object-contain opacity-90 transition-opacity hover:opacity-100 sm:h-28 sm:w-28 lg:h-32 lg:w-32"
+              />
+            </div>
+          </div>
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            <div className="rounded-xl border border-brand-100 bg-white p-7">
+            <div className="flex flex-col rounded-xl border border-brand-100 bg-white p-7">
               <p className="kicker">Upcoming events</p>
               {featuredEvents.length > 0 ? (
                 <>
-                  <ul className="mt-6 space-y-6">
+                  <ul className="mt-6 flex-1 space-y-6">
                     {featuredEvents.map((event) => (
                       <li key={event.slug}>
                         <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent-700">
@@ -134,19 +189,26 @@ export default async function HomePage() {
                   </ul>
                   <Link
                     href="/events"
-                    className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-brand-700 transition-colors hover:text-accent-700"
+                    className="group mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-brand-700 transition-colors hover:text-accent-700"
                   >
-                    View all events
-                    <ArrowRight className="h-4 w-4" />
+                    <span>View all events</span>
+                    <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                   </Link>
                 </>
               ) : (
                 <>
-                  <p className="mt-6 text-sm leading-relaxed text-ink-soft">
-                    New events are announced at meetings and on our Discord and
-                    Instagram. Check back soon.
+                  {/* With nothing else scheduled, the weekly meeting still
+                      shows. */}
+                  {meetingSummary(settings) ? (
+                    <div className="mt-6">
+                      <MeetingCard summary={meetingSummary(settings) ?? ''} compact />
+                    </div>
+                  ) : null}
+                  <p className="mt-5 flex-1 text-sm leading-relaxed text-ink-soft">
+                    Other events are announced at meetings and on our Discord
+                    and Instagram.
                   </p>
-                  <div className="mt-6 flex flex-col gap-3">
+                  <div className="mt-auto flex flex-col gap-3 pt-6">
                     {settings?.instagramUrl ? (
                       <a
                         href={settings.instagramUrl}
@@ -154,10 +216,11 @@ export default async function HomePage() {
                         rel="noopener noreferrer"
                         className="btn-outline w-full"
                       >
-                        <span className="grid w-full grid-cols-[1.25rem_1fr] items-center gap-2 text-left">
+                        <span className="flex items-center gap-2">
                           <InstagramLogo className="h-5 w-5 shrink-0" />
-                          Follow us on Instagram
+                          <span>Follow us on Instagram</span>
                         </span>
+                        <ArrowRight className="h-4 w-4" />
                       </a>
                     ) : null}
                     {settings?.discordUrl ? (
@@ -167,10 +230,11 @@ export default async function HomePage() {
                         rel="noopener noreferrer"
                         className="btn-green w-full"
                       >
-                        <span className="grid w-full grid-cols-[1.25rem_1fr] items-center gap-2 text-left">
+                        <span className="flex items-center gap-2">
                           <DiscordLogo className="h-5 w-5 shrink-0" />
-                          Join our Discord
+                          <span>Join our Discord</span>
                         </span>
+                        <ArrowRight className="h-4 w-4" />
                       </a>
                     ) : null}
                   </div>
@@ -213,8 +277,8 @@ export default async function HomePage() {
                 {announcements?.sponsorshipBlurb ??
                   'Support our students through funding, prizes, speakers, and more.'}
               </p>
-              <Link href="/sponsors" className="btn-outline-light mt-7 self-start">
-                Sponsorship opportunities
+              <Link href="/sponsors" className="btn-outline-light mt-7 self-end">
+                Become a sponsor
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -229,28 +293,44 @@ export default async function HomePage() {
             title="A supportive community built around security"
             lede="WiCyS Kean is a student chapter of Women in CyberSecurity, a national nonprofit dedicated to recruiting, retaining, and advancing women in the field. Everyone is welcome here. Our members come from every major and every skill level, united by curiosity about how the digital world works and how to protect it."
           />
-          <ol className="mt-8 grid gap-x-8 gap-y-4 self-center sm:grid-cols-2 lg:mt-14">
-            {WHAT_WE_DO.map((item, index) => (
-              <li
-                key={item.label}
-                className="flex items-start gap-3 rounded-xl border border-brand-100 bg-white p-4 text-sm font-semibold text-ink-soft shadow-sm shadow-brand-950/5 transition-colors hover:border-brand-300"
-              >
-                <span className="font-mono text-xs leading-6 text-accent-600">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <span>{item.label}</span>
-              </li>
-            ))}
+          <ul className="mt-8 grid gap-4 self-center sm:grid-cols-2 lg:mt-14">
+            {WHAT_WE_DO.map(({ label, Icon }, index) => {
+              // Checkerboard: purple and green swap places on each row.
+              const tone = WHAT_WE_DO_TONES[(index + Math.floor(index / 2)) % 2];
+              return (
+                // The list item stays put and the tile inside lifts, so the
+                // hover never flickers at the tile's edge.
+                <li key={label} className="group flex">
+                  <div
+                    className={`relative flex w-full items-center gap-4 overflow-hidden rounded-xl border p-5 transition-[translate,transform,border-color,box-shadow] duration-500 ease-out group-hover:-translate-y-1 ${tone.card}`}
+                  >
+                  <Icon
+                    aria-hidden
+                    strokeWidth={1.5}
+                    className={`pointer-events-none absolute -bottom-3 -right-2 h-20 w-20 opacity-[0.1] ${tone.ghost}`}
+                  />
+                  <span
+                    className={`grid h-11 w-11 shrink-0 place-items-center rounded-lg ${tone.chip}`}
+                  >
+                    <Icon aria-hidden className="h-5 w-5" />
+                  </span>
+                  <span className="relative font-display text-base font-bold leading-snug tracking-tight text-ink">
+                    {label}
+                  </span>
+                  </div>
+                </li>
+              );
+            })}
             <li className="flex justify-end pt-6 sm:col-span-2">
               <Link
                 href="/eboard"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 underline underline-offset-6 transition-colors hover:text-accent-700"
+                className="tap-target group inline-flex items-center gap-2 text-sm font-semibold text-brand-700 underline underline-offset-6 transition-colors hover:text-accent-700"
               >
                 <span>Meet the Kean WiCyS Eboard</span>
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </li>
-          </ol>
+          </ul>
         </div>
       </section>
 
@@ -270,45 +350,49 @@ export default async function HomePage() {
                 CTF details
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/join" className="btn-outline-light">
+              <Link href="/get-involved#join" className="btn-outline-light">
                 Get involved
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
-          <div className="relative mx-auto hidden w-full max-w-sm overflow-hidden rounded-xl border border-brand-500/40 shadow-lg shadow-brand-950/30 md:block">
-            <Image
-              src="/images/uploads/capture-the-flag-2026/flyer.jpg"
-              alt="Kean University Capture The Flag — March 20th, 2026 flyer"
-              width={754}
-              height={1000}
-              className="h-auto w-full"
-            />
-          </div>
+          <figure className="mx-auto hidden w-full max-w-sm md:block">
+            <div className="overflow-hidden rounded-xl border border-brand-500/40 shadow-lg shadow-brand-950/30">
+              <Image
+                src="/images/uploads/capture-the-flag-2026/flyer.jpg"
+                alt="Flyer for last year's Kean University Capture the Flag, held March 20, 2026"
+                width={754}
+                height={1000}
+                className="h-auto w-full"
+              />
+            </div>
+            <figcaption className="mt-4 text-center font-mono text-[11px] uppercase tracking-[0.16em] text-brand-200">
+              Flyer from last year&apos;s CTF, March 2026
+            </figcaption>
+          </figure>
         </div>
       </section>
 
       {teaserPhotos.length > 0 ? (
-        <section className="py-20">
-          <div className="container-site">
-            <div className="flex flex-wrap items-end justify-between gap-6">
+        <section className="pb-8 pt-20">
+          {/* Wider than the text column so the photos get more room, with a
+              side margin that grows with the screen. The heading and link
+              line up with the photos' outer edges. */}
+          <div
+            className="mx-auto w-full max-w-[112rem]"
+            style={{ paddingInline: 'clamp(1.25rem, 6vw, 7.5rem)' }}
+          >
+            <div>
               <SectionHeading
                 kicker="From the gallery"
-                title={latestAlbum ? `${latestAlbum.period}` : 'Chapter life'}
+                title={latestAlbum ? latestAlbum.title : 'Chapter life'}
               />
-              <Link
-                href="/gallery"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 transition-colors hover:text-accent-700"
-              >
-                View full gallery
-                <ArrowRight className="h-4 w-4" />
-              </Link>
             </div>
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {teaserPhotos.slice(0, 4).map((photo, index) => (
                 <div
                   key={`${photo}-${index}`}
-                  className="relative aspect-[4/3] overflow-hidden rounded-xl border border-brand-100 bg-surface"
+                  className="relative aspect-[4/3] overflow-hidden rounded-md border border-brand-100 bg-surface"
                 >
                   <Image
                     src={photo}
@@ -320,11 +404,20 @@ export default async function HomePage() {
                 </div>
               ))}
             </div>
+            <div className="mt-8 flex justify-end">
+              <Link
+                href="/gallery"
+                className="tap-target group inline-flex items-center gap-2 text-base font-semibold text-brand-700 underline decoration-accent-400 decoration-2 underline-offset-[6px] transition-colors hover:text-brand-900"
+              >
+                <span>View full gallery</span>
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </div>
           </div>
         </section>
       ) : null}
 
-      <section className="pb-28 pt-16 sm:pt-24">
+      <section className="pb-20 pt-8 sm:pt-10">
         <div className="container-site">
           <div className="rounded-2xl border border-accent-200 bg-accent-50 px-7 py-12 text-center sm:px-12">
             <h2 className="mx-auto max-w-xl font-display text-3xl font-bold tracking-tight text-ink">
@@ -335,7 +428,7 @@ export default async function HomePage() {
               meeting, bring a friend, and see what we are about.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3.5">
-              <Link href="/join" className="btn-green">
+              <Link href="/get-involved#join" className="btn-green">
                 Join WiCyS Kean
                 <ArrowRight className="h-4 w-4" />
               </Link>

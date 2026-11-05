@@ -4,7 +4,7 @@ import { ArrowRight, Mail, MessagesSquare, Search, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
 
 import { InstagramGlyph, LinkedinGlyph } from '@/components/brand-icons';
 import SiteSearch from '@/components/site-search';
@@ -14,11 +14,11 @@ const NAV_LINKS = [
   { href: '/eboard', label: 'E-Board' },
   { href: '/get-involved', label: 'Get Involved' },
   { href: '/ctf', label: 'CTF' },
-  { href: '/sponsors', label: 'Sponsors' },
-  { href: '/donate', label: 'Donate' },
   { href: '/resources', label: 'Resources' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/contact', label: 'Contact' },
+  { href: '/sponsors', label: 'Sponsors' },
+  { href: '/donate', label: 'Donate' },
 ];
 
 export type HeaderSocial = {
@@ -45,6 +45,8 @@ function Logo({ preload = false }: { preload?: boolean }) {
     />
   );
 }
+
+const OVERLAY_HEADER_PATHS = ['/', '/gallery', '/eboard'];
 
 export default function SiteHeader({
   socials,
@@ -117,8 +119,44 @@ export default function SiteHeader({
     pathname === href || pathname.startsWith(`${href}/`);
 
   const closeMenu = () => setMenuOpen(false);
+
+  // The logo and the nav links always land on the very top of their page.
+  // Already on that page, they scroll up; from another page, the top is forced
+  // once the new page has loaded.
+  const pendingTop = useRef<string | null>(null);
+  const scrollTop = (instant: boolean) => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.dispatchEvent(
+      new CustomEvent('site:scroll-top', { detail: { instant } })
+    );
+  };
+  const onTopLinkClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    closeMenu();
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+    if (pathname === href) {
+      event.preventDefault();
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        scrollTop(true);
+      } else {
+        window.dispatchEvent(new CustomEvent('site:scroll-top'));
+      }
+      return;
+    }
+    pendingTop.current = href;
+  };
+  useEffect(() => {
+    if (pendingTop.current !== pathname) return;
+    pendingTop.current = null;
+    scrollTop(true);
+  }, [pathname]);
   const overlayLinks = [{ href: '/', label: 'Home' }, ...NAV_LINKS];
-  const transparentAtTop = pathname === '/' && !scrolled && !menuOpen && !searchOpen;
+  // Pages whose hero runs up behind the header: it floats see-through over
+  // the hero and turns solid white once the page is scrolled.
+  const overlayHeader = OVERLAY_HEADER_PATHS.includes(pathname);
+  const transparentAtTop = overlayHeader && !scrolled && !menuOpen && !searchOpen;
   const iconButtonTone = transparentAtTop
     ? 'text-white/90 hover:bg-white/10 hover:text-white'
     : 'text-ink-soft hover:bg-brand-50 hover:text-brand-700';
@@ -126,7 +164,7 @@ export default function SiteHeader({
   return (
     <>
       <header
-        className={`${pathname === '/' ? 'fixed' : 'sticky'} top-0 z-50 w-full border-b transition-[background-color,border-color,box-shadow] duration-300 ${
+        className={`${overlayHeader ? 'fixed' : 'sticky'} top-0 z-50 w-full border-b transition-[background-color,border-color,box-shadow] duration-300 ${
           transparentAtTop
             ? 'site-header-overlay border-transparent bg-transparent shadow-none'
             : `bg-white/95 shadow-sm backdrop-blur ${menuOpen ? 'border-transparent' : 'border-brand-100'}`
@@ -136,8 +174,8 @@ export default function SiteHeader({
           <Link
             href="/"
             aria-label="WiCyS Kean University home"
-            onClick={menuOpen ? closeMenu : undefined}
-            className="flex items-center transition-transform duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.04] focus-visible:-translate-y-0.5 focus-visible:scale-[1.04]"
+            onClick={(event) => onTopLinkClick(event, '/')}
+            className="relative flex items-center transition-transform duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.04] hover:before:absolute hover:before:-inset-2 hover:before:content-[''] focus-visible:-translate-y-0.5 focus-visible:scale-[1.04]"
           >
             <Logo preload />
           </Link>
@@ -150,10 +188,13 @@ export default function SiteHeader({
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={(event) => onTopLinkClick(event, link.href)}
                 aria-current={isActive(link.href) ? 'page' : undefined}
                 className={`group relative whitespace-nowrap py-1 text-sm font-medium transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-full after:origin-right hover:after:origin-left after:rounded-sm after:bg-accent-400 after:transition-transform after:duration-300 ${
                   transparentAtTop
-                    ? 'text-white/90 after:scale-x-0 hover:text-white hover:after:scale-x-100'
+                    ? isActive(link.href)
+                      ? 'text-white after:scale-x-100'
+                      : 'text-white/90 after:scale-x-0 hover:text-white hover:after:scale-x-100'
                     : isActive(link.href)
                     ? 'text-brand-700 after:scale-x-100'
                     : 'text-ink-soft after:scale-x-0 hover:text-brand-700 hover:after:scale-x-100'
@@ -171,13 +212,21 @@ export default function SiteHeader({
             >
               {searchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
             </button>
-            <Link
-              href="/join"
-              className="btn-green px-4 py-2"
-            >
-              Join WiCyS
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            {/* The hidden copy holds the button's resting width in the menu,
+                so the real button can grow to the right on hover without
+                pushing the links over. */}
+            <span className="relative inline-flex">
+              <span aria-hidden className="btn-green invisible px-4 py-2">
+                Join WiCyS
+              </span>
+              <Link
+                href="/get-involved#join"
+                className="btn-green absolute left-0 top-0 whitespace-nowrap px-4 py-2"
+              >
+                Join WiCyS
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </span>
           </nav>
 
           <div className="flex items-center gap-1 lg:hidden">
@@ -246,7 +295,7 @@ export default function SiteHeader({
             <li key={link.href}>
               <Link
                 href={link.href}
-                onClick={closeMenu}
+                onClick={(event) => onTopLinkClick(event, link.href)}
                 tabIndex={menuOpen ? 0 : -1}
                 className={`nav-takeover-link${isActive(link.href) ? ' active' : ''}`}
               >
@@ -260,7 +309,7 @@ export default function SiteHeader({
 
         <div className="nav-takeover-bottom">
           <Link
-            href="/join"
+            href="/get-involved#join"
             onClick={closeMenu}
             tabIndex={menuOpen ? 0 : -1}
             className="btn-green w-full max-w-xs"

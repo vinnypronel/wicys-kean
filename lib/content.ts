@@ -185,8 +185,12 @@ export async function getSponsors() {
 
 export async function getResourceLinks() {
   const resources = await reader.collections.resourceLinks.all();
-  return resources.map((resource) => ({
-    slug: resource.slug,
-    ...resource.entry,
-  }));
+  // Lowest order number first. Resources without one keep their
+  // alphabetical place after the numbered ones.
+  return resources
+    .map((resource) => ({
+      slug: resource.slug,
+      ...resource.entry,
+    }))
+    .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 }

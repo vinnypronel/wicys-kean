@@ -1,32 +1,30 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
+  ArrowDown,
   ArrowRight,
   ArrowUpRight,
   CreditCard,
-  Laptop,
   Mail,
-  Plane,
   Send,
   Smartphone,
   Trophy,
-  Users,
+  Utensils,
 } from 'lucide-react';
 
+import HeroPhoto from '@/components/hero-photo';
 import SectionHeading from '@/components/section-heading';
 import { getDonatePage, getSiteSettings } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'Donate',
   description:
-    'Support WiCyS at Kean University. Donations help members compete, travel to conferences, and learn hands-on cybersecurity skills.',
+    'Support WiCyS at Kean University. Donations help cover prizes for our Capture the Flag competition and food and supplies for our events.',
 };
 
 const IMPACT = [
-  { Icon: Plane, label: 'Conference travel', blurb: 'Helping members attend the national WiCyS conference.' },
-  { Icon: Trophy, label: 'Competitions', blurb: 'CTF entry fees, prizes, and challenge infrastructure.' },
-  { Icon: Laptop, label: 'Training and tools', blurb: 'Learning platforms and hardware for workshops.' },
-  { Icon: Users, label: 'Member events', blurb: 'Speaker events, workshops, and socials on campus.' },
+  { Icon: Trophy, label: 'Capture the Flag', blurb: 'Prizes and running costs for the CTF competition we host.' },
+  { Icon: Utensils, label: 'Food and event supplies', blurb: 'Food, materials, and supplies for our meetings and events.' },
 ];
 
 export default async function DonatePage() {
@@ -57,21 +55,31 @@ export default async function DonatePage() {
   return (
     <>
       <section className="page-hero">
-        <div className="container-site py-16 sm:py-24">
-          <SectionHeading
-            level="h1"
-            tone="dark"
-            kicker="Donate"
-            title="Support women in cybersecurity at Kean"
-            lede={
-              page?.intro ||
-              'Every contribution, big or small, goes directly toward helping our members learn, compete, and grow into cybersecurity careers.'
-            }
+        <div className="hero-split hero-split-feature donate-hero">
+          <div>
+            <SectionHeading
+              level="h1"
+              tone="dark"
+              title={<span className="lg:whitespace-nowrap">Support WiCyS at Kean</span>}
+              lede={
+                page?.intro ||
+                'Every contribution, big or small, goes directly toward helping our members learn, compete, and grow into cybersecurity careers.'
+              }
+            />
+            <a href="#ways-to-give" className="btn-green mt-8">
+              Read more
+              <ArrowDown className="h-4 w-4" />
+            </a>
+          </div>
+          <HeroPhoto
+            large
+            src="/images/uploads/conferences-2025-2026/photos/15.jpg"
+            alt="WiCyS Kean members learning and working together around a conference table"
           />
         </div>
       </section>
 
-      <section className="py-16 sm:py-20">
+      <section id="ways-to-give" className="scroll-mt-24 py-16 sm:py-20">
         <div className="container-site grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
           <div>
             <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
@@ -166,21 +174,34 @@ export default async function DonatePage() {
               </ul>
             </div>
 
-            {settings?.chapterEmail ? (
-              <div className="rounded-xl border border-brand-100 bg-white p-7">
-                <h3 className="font-display text-lg font-bold tracking-tight text-ink">
-                  Questions about donating?
-                </h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-ink-soft">
-                  We are happy to talk through other ways to give.
-                </p>
-                <Link href="/contact?topic=Donations" className="btn-outline mt-5 px-4 py-2.5">
-                  <Mail className="h-4 w-4" />
-                  Contact us
-                </Link>
-              </div>
-            ) : null}
           </div>
+
+          {/* A slim strip under both columns, lined up with their outer edges. */}
+          {settings?.chapterEmail ? (
+            <div
+              className="rounded-xl border border-brand-100 bg-white"
+              style={{
+                gridColumn: '1 / -1',
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '0.75rem 1.5rem',
+                padding: '1rem 1.5rem',
+              }}
+            >
+              <p className="text-sm leading-relaxed text-ink-soft">
+                <span className="font-display text-base font-bold tracking-tight text-ink">
+                  Questions about donating?
+                </span>{' '}
+                We are happy to talk through other ways to give.
+              </p>
+              <Link href="/contact?topic=Donations" className="btn-outline px-4 py-2.5">
+                <Mail className="h-4 w-4" />
+                Contact us
+              </Link>
+            </div>
+          ) : null}
         </div>
       </section>
     </>

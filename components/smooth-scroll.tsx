@@ -147,6 +147,13 @@ export default function SmoothScrollProvider({
     };
     lenis.on('scroll', showScrollbar);
 
+    // The header logo asks for the top of the page with this event.
+    const toTop = (event: Event) => {
+      const instant = (event as CustomEvent<{ instant?: boolean }>).detail?.instant;
+      lenis.scrollTo(0, { immediate: Boolean(instant), force: true });
+    };
+    window.addEventListener('site:scroll-top', toTop);
+
     let running = true;
     function raf(time: number) {
       if (!running) return;
@@ -157,6 +164,7 @@ export default function SmoothScrollProvider({
 
     return () => {
       running = false;
+      window.removeEventListener('site:scroll-top', toTop);
       lenis.off('scroll', showScrollbar);
       lenis.destroy();
     };

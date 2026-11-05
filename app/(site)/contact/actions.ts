@@ -1,6 +1,7 @@
 'use server';
 
 import { getSiteSettings } from '@/lib/content';
+import { saveContactMessage } from '@/lib/submissions';
 
 export type ContactState = {
   status: 'idle' | 'success' | 'error';
@@ -60,62 +61,55 @@ export async function sendContactMessage(
     return { status: 'error', message: 'Please fix the highlighted fields.', errors, values };
   }
 
+  // Saved so it shows in the admin dashboard (the database on the live site).
+  try {
+    await saveContactMessage(values);
+  } catch (err) {
+    console.error('Failed to save contact message:', err);
+  }
+
   const settings = await getSiteSettings();
   const to = process.env.CONTACT_TO_EMAIL || settings?.chapterEmail;
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.CONTACT_FROM_EMAIL || 'WiCyS Kean Website <onboarding@resend.dev>';
 
-  if (!apiKey || !to) {
-    console.error('Contact form: RESEND_API_KEY or recipient email is not configured.');
-    return {
-      status: 'error',
-      message: to
-        ? `The form is not set up yet. Please email us directly at ${to}.`
-        : 'The form is not set up yet. Please reach out on Discord or Instagram.',
-      values,
-    };
-  }
+  if (apiKey && to) {
+    const html = `
+      <p><strong>Name:</strong> ${escapeHtml(values.name)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(values.email)}</p>
+      ${values.organization ? `<p><strong>Organization:</strong> ${escapeHtml(values.organization)}</p>` : ''}
+      <p><strong>Topic:</strong> ${escapeHtml(values.topic)}</p>
+      <p><strong>Message:</strong></p>
+      <p style="white-space:pre-wrap">${escapeHtml(values.message)}</p>
+    `;
 
-  const html = `
-    <p><strong>Name:</strong> ${escapeHtml(values.name)}</p>
-    <p><strong>Email:</strong> ${escapeHtml(values.email)}</p>
-    ${values.organization ? `<p><strong>Organization:</strong> ${escapeHtml(values.organization)}</p>` : ''}
-    <p><strong>Topic:</strong> ${escapeHtml(values.topic)}</p>
-    <p><strong>Message:</strong></p>
-    <p style="white-space:pre-wrap">${escapeHtml(values.message)}</p>
-  `;
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from,
+          to: [to],
+          reply_to: values.email,
+          subject: `[Website] ${values.topic} from ${values.name}${values.organization ? ` (${values.organization})` : ''}`,
+          html,
+          text: `Name: ${values.name}\nEmail: ${values.email}\n${values.organization ? `Organization: ${values.organization}\n` : ''}Topic: ${values.topic}\n\n${values.message}`,
+        }),
+      });
 
-  try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from,
-        to: [to],
-        reply_to: values.email,
-        subject: `[Website] ${values.topic} from ${values.name}${values.organization ? ` (${values.organization})` : ''}`,
-        html,
-        text: `Name: ${values.name}\nEmail: ${values.email}\n${values.organization ? `Organization: ${values.organization}\n` : ''}Topic: ${values.topic}\n\n${values.message}`,
-      }),
-    });
-
-    if (!res.ok) {
-      console.error('Contact form: Resend responded', res.status, await res.text());
-      throw new Error('Send failed');
+      if (!res.ok) {
+        console.error('Contact form: Resend responded', res.status, await res.text());
+      }
+    } catch (err) {
+      console.error('Failed to send contact notification email:', err);
     }
-  } catch {
-    return {
-      status: 'error',
-      message: `Something went wrong sending your message. Please try again or email us at ${to}.`,
-      values,
-    };
   }
 
   return {
     status: 'success',
-    message: "Thanks for reaching out! We'll get back to you soon.",
+    message: "Thanks for reaching out! We've received your message and an officer will get back to you soon.",
   };
 }

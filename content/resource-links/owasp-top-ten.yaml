@@ -1,6 +1,6 @@
 title: OWASP Top 10
 category: learning
-url: https://owasp.org/www-project-top-ten/
+url: https://owasp.org/Top10/
 blurb: >-
-  The industry-standard list of the most critical web application security risks.
-
+  The standard list of the biggest web app security risks, in plain language. A good place to start learning web security.
+logo: /images/uploads/owasp-top-ten/logo.png

@@ -8,14 +8,6 @@ import type { SearchItem } from '@/lib/search';
 
 const MAX_RESULTS = 8;
 
-const SUGGESTIONS = [
-  { label: 'Events', href: '/events' },
-  { label: 'Join WiCyS', href: '/join' },
-  { label: 'CTF', href: '/ctf' },
-  { label: 'Sponsor us', href: '/sponsors' },
-  { label: 'Resources', href: '/resources' },
-];
-
 function normalize(value: string) {
   return value.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '');
 }
@@ -38,6 +30,12 @@ function scoreItem(item: SearchItem, terms: string[]): number {
   // Pages win ties so "events" finds the Events page before a single event.
   return item.type === 'Page' ? score + 0.5 : score;
 }
+
+const FILLER_WORDS = new Set(
+  'a an the and or of to for in on at is are am be do does did i we you your my our us me it this that there here how what when where who why which can could will would should with from by about as if so any some have has get'.split(
+    ' '
+  )
+);
 
 let cachedIndex: SearchItem[] | null = null;
 
@@ -81,7 +79,11 @@ export default function SiteSearch({
   }, [open]);
 
   const results = useMemo(() => {
-    const terms = normalize(query).trim().split(/\s+/).filter(Boolean);
+    const words = normalize(query).trim().split(/\s+/).filter(Boolean);
+    // Filler words are ignored, so a question like "when do you meet" still
+    // matches. If the query is only filler words, they are kept.
+    const meaningful = words.filter((word) => !FILLER_WORDS.has(word));
+    const terms = meaningful.length > 0 ? meaningful : words;
     if (!index || terms.length === 0) return [];
     return index
       .map((item) => ({ item, score: scoreItem(item, terms) }))
@@ -163,25 +165,8 @@ export default function SiteSearch({
               </button>
             </div>
 
-            <div className="mt-3" aria-live="polite">
-              {!hasQuery ? (
-                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
-                    Popular
-                  </span>
-                  {SUGGESTIONS.map((suggestion) => (
-                    <button
-                      key={suggestion.href}
-                      type="button"
-                      tabIndex={open ? 0 : -1}
-                      onClick={() => go(suggestion.href)}
-                      className="font-medium text-brand-700 underline-offset-4 transition-colors hover:text-accent-700 hover:underline"
-                    >
-                      {suggestion.label}
-                    </button>
-                  ))}
-                </div>
-              ) : failed ? (
+            <div className={hasQuery ? 'mt-3' : undefined} aria-live="polite">
+              {!hasQuery ? null : failed ? (
                 <p className="py-2 text-sm text-ink-soft">Search is unavailable right now. Please try again later.</p>
               ) : !index ? (
                 <p className="py-2 text-sm text-ink-soft">Loading...</p>
@@ -216,7 +201,7 @@ export default function SiteSearch({
                         }`}
                       >
                         <span className="w-20 shrink-0 font-mono text-[11px] uppercase tracking-[0.14em] text-accent-700">
-                          {item.type}
+                          {item.page}
                         </span>
                         <span className="min-w-0 flex-1 transition-transform duration-200 group-hover:translate-x-1">
                           <span className="block truncate text-sm font-semibold text-ink transition-colors duration-200 group-hover:text-brand-700">{item.title}</span>

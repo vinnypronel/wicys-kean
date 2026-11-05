@@ -1,6 +1,7 @@
 'use client';
 
 import { useActionState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { CheckCircle2, Send } from 'lucide-react';
 
 import { sendContactMessage, type ContactState } from '@/app/(site)/contact/actions';
@@ -191,6 +192,13 @@ export default function ContactForm({
         <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
           <p aria-live="polite" className="text-sm text-red-600">
             {state.status === 'error' ? state.message : null}
+          </p>
+          <p className="text-xs text-ink-soft">
+            How we handle your message is on our{' '}
+            <Link href="/privacy" className="font-semibold text-brand-700 underline underline-offset-2">
+              Privacy page
+            </Link>
+            .
           </p>
           <button type="submit" disabled={pending} className="btn-green px-6 py-3 sm:shrink-0">
             {pending ? 'Sending...' : 'Send message'}

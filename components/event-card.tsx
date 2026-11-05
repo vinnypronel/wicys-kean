@@ -47,10 +47,10 @@ export default function EventCard({ event }: { event: EventEntry }) {
         </p>
         <Link
           href={`/events/${event.slug}`}
-          className="mt-3.5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 transition-colors hover:text-accent-700"
+          className="group mt-3.5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 transition-colors hover:text-accent-700"
         >
-          Event details
-          <ArrowRight className="h-4 w-4" />
+          <span>Event details</span>
+          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
         </Link>
       </div>
 

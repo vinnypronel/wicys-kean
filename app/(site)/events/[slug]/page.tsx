@@ -23,7 +23,6 @@ import {
 } from '@/lib/content';
 import {
   eventEndDate,
-  eventTypeLabel,
   formatLongDate,
   formatTime,
 } from '@/lib/format';
@@ -74,20 +73,16 @@ export default async function EventPage({
 
   return (
     <>
-      <section className="page-hero">
+      <section className="page-hero page-hero-auto">
         <div className="container-site py-12 sm:py-20">
           <Link
             href="/events"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-200 transition-colors hover:text-accent-400"
+            className="tap-target inline-flex items-center gap-2 text-sm font-semibold text-brand-200 transition-colors hover:text-accent-400"
           >
             <ArrowLeft className="h-4 w-4" />
             All events
           </Link>
-          <p className="kicker kicker-light mt-8">
-            {eventTypeLabel(event.type)}
-            {past ? ' · Past event' : ''}
-          </p>
-          <h1 className="mt-4 max-w-3xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl">
+          <h1 className="mt-8 max-w-3xl font-display text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl">
             {event.title}
           </h1>
 

@@ -11,10 +11,10 @@ const PAGES = [
   '/sponsors',
   '/resources',
   '/gallery',
-  '/join',
   '/get-involved',
   '/donate',
   '/contact',
+  '/privacy',
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

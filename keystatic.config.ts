@@ -50,6 +50,20 @@ export default config({
           label: 'Short bio',
           multiline: true,
         }),
+        major: fields.text({
+          label: 'Major and class year (optional)',
+          description: "For example: Computer Science, '27",
+        }),
+        duties: fields.text({
+          label: 'What they handle on the board (optional)',
+          description: 'One short line in plain words. For example: Works on event details and logistics',
+        }),
+        answer: fields.text({
+          label: 'Answer to the e-board question (optional)',
+          description:
+            'Every officer answers the same question: "What got you into cybersecurity?" One or two sentences. It shows as a quote on their card.',
+          multiline: true,
+        }),
         linkedinUrl: fields.url({
           label: 'LinkedIn URL',
         }),
@@ -123,6 +137,19 @@ export default config({
           directory: uploadDirectory,
           publicPath: uploadPublicPath,
         }),
+        photos: fields.array(
+          fields.image({
+            label: 'Photo',
+            directory: uploadDirectory,
+            publicPath: uploadPublicPath,
+          }),
+          {
+            label: 'More photos',
+            description:
+              'Optional. Shown as a small strip on their card: an internship, an award, a conference. ' +
+              photoHint,
+          }
+        ),
         highlights: fields.array(fields.text({ label: 'Highlight' }), {
           label: 'Highlights (internships, awards, programs)',
           description:
@@ -224,13 +251,13 @@ export default config({
           validation: { isRequired: true },
         }),
         academicYear: fields.text({
-          label: 'Academic year',
-          description: 'For example: 2026-2027',
+          label: 'Year',
+          description: 'The year the photos were taken. For example: 2026',
           validation: {
             isRequired: true,
             pattern: {
-              regex: /^\d{4}-\d{4}$/,
-              message: 'Use the format 2026-2027',
+              regex: /^\d{4}$/,
+              message: 'Use a four-digit year, like 2026',
             },
           },
         }),
@@ -243,11 +270,17 @@ export default config({
             { label: 'Conferences', value: 'conferences' },
             { label: 'Speakers and networking', value: 'networking' },
             { label: 'Socials', value: 'socials' },
-            { label: 'Chapter events', value: 'events' },
+            { label: 'Events', value: 'events' },
             { label: 'Research', value: 'research' },
             { label: 'Other', value: 'other' },
           ],
           defaultValue: 'meetings',
+        }),
+        externalPhotos: fields.checkbox({
+          label: 'Photos taken by someone else',
+          description:
+            'Tick this when the photos already carry a credit from another organization (a conference photographer, for example). It leaves off the WiCyS Kean label.',
+          defaultValue: false,
         }),
         event: fields.relationship({
           label: 'Linked event (optional)',
@@ -276,6 +309,18 @@ export default config({
         title: fields.slug({
           name: { label: 'Resource title', validation: { isRequired: true } },
           slug: { label: 'URL slug' },
+        }),
+        order: fields.integer({
+          label: 'Order (optional)',
+          description:
+            'Lower numbers show first within the category. Leave blank to sort alphabetically after the numbered ones.',
+        }),
+        logo: fields.image({
+          label: 'Logo (optional)',
+          description:
+            'A small square logo for the site or organization, shown beside the title. A PNG of 128px or larger works best.',
+          directory: uploadDirectory,
+          publicPath: uploadPublicPath,
         }),
         category: fields.select({
           label: 'Category',
@@ -500,7 +545,7 @@ export default config({
           },
         }),
         timeline: fields.array(fields.text({ label: 'Timeline item' }), {
-          label: 'Tentative timeline items',
+          label: 'When (for example, the semester)',
           itemLabel(props) {
             return props.value ?? 'Item';
           },

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import {
+  ArrowDown,
   ArrowUpRight,
   Award,
   BookOpen,
@@ -10,6 +11,8 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+import { DiscordLogo } from '@/components/brand-icons';
+import HeroPhoto from '@/components/hero-photo';
 import SectionHeading from '@/components/section-heading';
 import { getResourceLinks } from '@/lib/content';
 
@@ -49,25 +52,64 @@ export default async function ResourcesPage() {
   return (
     <>
       <section className="page-hero">
-        <div className="container-site py-16 sm:py-24">
-          <SectionHeading
-            level="h1"
-            tone="dark"
-            kicker="Resources"
-            title="Tools to learn, practice, and get hired"
-            lede="A curated starting point for members, from first tutorials to certifications and conferences. Have a suggestion? Send it to the board."
-          />
-          <nav aria-label="Resource categories" className="mt-8 flex flex-wrap gap-x-6 gap-y-2.5">
-            {grouped.map((group) => (
-              <a
-                key={group.key}
-                href={`#${group.key}`}
-                className="text-sm font-medium text-brand-200 underline-offset-4 transition-colors hover:text-accent-400 hover:underline"
+        <div className="hero-split">
+          <div className="resources-hero-copy">
+            <SectionHeading
+              level="h1"
+              tone="dark"
+              // Non-breaking spaces keep "and get hired" together, so the
+              // title breaks before "and".
+              title={'Tools to learn, practice, and\u00A0get\u00A0hired'}
+              lede="A curated starting point for members, from first tutorials to certifications and conferences. Have a suggestion? Send it to the board."
+            />
+            {/* The page index: one row per category, stacked, each
+                with its icon and how many resources it holds. */}
+            <nav aria-label="Resource categories" className="mt-10">
+              <p className="font-mono text-sm uppercase tracking-[0.18em] text-accent-400">
+                Jump to
+              </p>
+              <ul
+                className="mt-3.5 border-t border-white/20"
+                style={{ maxWidth: '28rem' }}
               >
-                {group.label}
-              </a>
-            ))}
-          </nav>
+                {grouped.map(({ key, label, Icon, items }) => (
+                  <li key={key} className="border-b border-white/20">
+                    <a
+                      href={`#${key}`}
+                      // On hover the row slides right and its label underlines.
+                      className="group text-base font-medium text-white transition-[color,padding] duration-300 ease-out hover:pl-2 hover:text-accent-400 focus-visible:pl-2"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.875rem',
+                        paddingBlock: '0.875rem',
+                      }}
+                    >
+                      <Icon aria-hidden className="h-5 w-5 shrink-0 text-accent-400" />
+                      <span style={{ flex: 1 }}>
+                        <span className="hover-underline">{label}</span>
+                      </span>
+                      <span className="font-mono text-sm text-brand-200">
+                        {items.length}
+                      </span>
+                      <ArrowDown
+                        aria-hidden
+                        className="h-5 w-5 shrink-0 text-brand-200 transition-[translate,color] duration-200 group-hover:translate-y-0.5 group-hover:text-accent-400"
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+          {/* Left off on phones, so the page index fits on the first
+              screen without scrolling. */}
+          <div className="hidden sm:flex sm:justify-center lg:justify-end">
+            <HeroPhoto
+              src="/images/uploads/conferences-2025-2026/photos/15.jpg"
+              alt="Students working on laptops together at a conference table"
+            />
+          </div>
         </div>
       </section>
 
@@ -93,18 +135,52 @@ export default async function ResourcesPage() {
                     className="group flex flex-col rounded-xl border border-brand-100 bg-white p-6 transition-colors hover:border-brand-400 hover:bg-brand-50/40"
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <h3 className="font-display font-bold tracking-tight text-ink">
+                      <h3 className="flex items-center gap-2.5 font-display font-bold tracking-tight text-ink">
+                        {item.logo ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={item.logo}
+                            alt=""
+                            loading="lazy"
+                            style={{
+                              width: '1.75rem',
+                              height: '1.75rem',
+                              flex: 'none',
+                              objectFit: 'contain',
+                            }}
+                          />
+                        ) : /discord\.(gg|com)$/.test(hostname(item.url)) ? (
+                          <DiscordLogo className="h-7 w-7 shrink-0" />
+                        ) : null}
                         {item.title}
                       </h3>
-                      <ArrowUpRight className="h-4 w-4 shrink-0 text-brand-300 transition-colors group-hover:text-accent-600" />
                     </div>
                     {item.blurb ? (
                       <p className="mt-2.5 text-sm leading-relaxed text-ink-soft">
                         {item.blurb}
                       </p>
                     ) : null}
-                    <p className="mt-auto pt-4 font-mono text-[11px] uppercase tracking-[0.12em] text-brand-400">
-                      {hostname(item.url)}
+                    {/* The site address with its arrow, set a little in from
+                        the right edge. The underline slides in from the left
+                        when the card is hovered, and the arrow turns to
+                        point straight right. */}
+                    <p
+                      className="mt-auto pt-4 font-mono text-[11px] uppercase tracking-[0.12em] text-brand-600"
+                      style={{ textAlign: 'right', paddingRight: '0.75rem' }}
+                    >
+                      <span
+                        className="step-link"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.375rem',
+                        }}
+                      >
+                        <span className="hover-underline">
+                          {hostname(item.url)}
+                        </span>
+                        <ArrowUpRight className="h-3.5 w-3.5 shrink-0 transition-[rotate] duration-300 ease-out group-hover:rotate-45" />
+                      </span>
                     </p>
                   </a>
                 ))}
