@@ -49,3 +49,10 @@ next-env.d.ts
 
 # photos pulled from the chapter Canva deck (staging, not yet on the site)
 /canva-photos/
+
+# Form submissions and uploaded resumes hold personal details. Never commit them.
+/content/submissions/
+/public/uploads/
+
+# Full-size originals of photos that were re-compressed for the site.
+/photo-originals/

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
+import Mascot from '@/components/mascot';
 import SiteChrome from '@/components/site-chrome';
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ const SUGGESTIONS = [
 export default function NotFound() {
   return (
     <SiteChrome>
-      <section className="container-site grid min-h-[60vh] content-center py-20">
+      <section className="container-site grid min-h-[60vh] content-center items-center gap-12 py-20 lg:grid-cols-[1fr_auto] lg:gap-16">
         <div className="max-w-xl">
           <p className="kicker">Error 404</p>
           <p className="mt-6 font-mono text-sm text-brand-700">
@@ -41,13 +42,14 @@ export default function NotFound() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-semibold text-brand-700 transition-colors hover:text-accent-700"
+                className="tap-target text-sm font-semibold text-brand-700 transition-colors hover:text-accent-700"
               >
                 {link.label}
               </Link>
             ))}
           </div>
         </div>
+        <Mascot width="min(20rem, calc(100vw - 2.5rem))" className="mx-auto lg:mx-0" sizes="320px" />
       </section>
     </SiteChrome>
   );

@@ -1,6 +1,7 @@
-title: SANS CyberTalent Programs
+title: SANS Cyber Academies
 category: scholarships
-url: https://www.sans.org/cyber-talent/
+url: https://www.sans.org/cyber-academy
 blurb: >-
   Free training and scholarship-backed career accelerators from the SANS Institute.
-
+logo: /images/uploads/sans-cybertalent/logo.png
+order: 2

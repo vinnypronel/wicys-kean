@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { GraduationCap } from 'lucide-react';
 
 import { LinkedinLogo } from '@/components/brand-icons';
+import PhotoGrid from '@/components/photo-grid';
 
 export type AlumniCardProps = {
   name: string;
@@ -12,6 +13,7 @@ export type AlumniCardProps = {
   currentCompany?: string | null;
   highlights?: readonly string[] | null;
   linkedinUrl?: string | null;
+  photos?: readonly string[] | null;
 };
 
 function initials(name: string): string {
@@ -32,12 +34,14 @@ export default function AlumniCard({
   currentCompany,
   highlights,
   linkedinUrl,
+  photos,
 }: AlumniCardProps) {
   const chapterRole = [pastRole, years].filter(Boolean).join(', ');
   const points = (highlights ?? []).filter(Boolean);
+  const extraPhotos = (photos ?? []).filter(Boolean);
 
   return (
-    <article className="group flex flex-col rounded-2xl border border-brand-200 bg-white p-6 transition-[transform,border-color,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:border-brand-600 hover:shadow-xl hover:shadow-brand-950/10 sm:p-7">
+    <article className="group relative flex flex-col rounded-2xl border hover:before:absolute hover:before:-inset-3 hover:before:content-[''] border-brand-200 bg-white p-6 transition-[translate,transform,border-color,box-shadow] duration-500 ease-out hover:-translate-y-1.5 hover:border-brand-600 hover:shadow-xl hover:shadow-brand-950/10 hover:ring-1 hover:ring-brand-600 sm:p-7">
       <div className="flex items-center gap-5">
         <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-full bg-brand-100 ring-2 ring-accent-400 ring-offset-2 ring-offset-white sm:h-32 sm:w-32">
           {photo ? (
@@ -57,7 +61,7 @@ export default function AlumniCard({
         <div className="min-w-0">
           <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-accent-700">
             <GraduationCap aria-hidden className="h-4 w-4 shrink-0" />
-            {chapterRole ? `WiCyS Kean ${chapterRole}` : 'WiCyS Kean alumni'}
+            {chapterRole ? `WiCyS Kean ${chapterRole}` : 'Alumni'}
           </p>
           <h3 className="mt-2 font-display text-2xl font-bold tracking-tight text-ink">
             {name}
@@ -100,6 +104,25 @@ export default function AlumniCard({
                 </li>
               ))}
             </ul>
+          </div>
+        ) : null}
+
+        {extraPhotos.length > 0 ? (
+          <div className="mt-5">
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft">
+              Snapshots
+            </p>
+            {/* A short strip. Each photo opens full screen. */}
+            <div className="mt-3">
+              <PhotoGrid
+                layout="justified"
+                rowHeight="124px"
+                photos={extraPhotos.map((src, index) => ({
+                  src,
+                  alt: `${name}, photo ${index + 1}`,
+                }))}
+              />
+            </div>
           </div>
         ) : null}
 

@@ -19,7 +19,7 @@ const EXPLORE_LINKS = [
 ];
 
 const INVOLVEMENT_LINKS = [
-  { href: '/join', label: 'Join WiCyS' },
+  { href: '/get-involved#join', label: 'Join WiCyS' },
   { href: '/get-involved', label: 'Get Involved' },
   { href: '/eboard', label: 'E-Board' },
   { href: '/sponsors', label: 'Sponsor Us' },
@@ -171,10 +171,16 @@ export default async function SiteFooter() {
         <div className="mx-auto flex w-full max-w-[92rem] flex-col gap-2 px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-16 xl:px-20">
           <p className="text-xs text-brand-200">
             &copy; {new Date().getFullYear()} WiCyS at Kean University
+            <span className="mx-2 text-white/30">|</span>
+            <Link href="/privacy" className="underline-offset-4 transition-colors hover:text-white hover:underline">
+              Privacy
+            </Link>
           </p>
-          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-brand-200">
-            Student chapter of Women in CyberSecurity
-          </p>
+          <div className="flex items-center gap-4 text-brand-200">
+            <p className="font-mono text-[11px] uppercase tracking-[0.14em]">
+              Student chapter of Women in CyberSecurity
+            </p>
+          </div>
         </div>
       </div>
     </footer>

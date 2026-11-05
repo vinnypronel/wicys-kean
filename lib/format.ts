@@ -124,7 +124,7 @@ export const ALBUM_CATEGORY_LABELS: Record<string, string> = {
   conferences: 'Conferences',
   networking: 'Speakers and networking',
   socials: 'Socials',
-  events: 'Chapter events',
+  events: 'Events',
   research: 'Research',
   other: 'Other',
 };

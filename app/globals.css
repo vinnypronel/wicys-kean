@@ -101,16 +101,28 @@ html.overlay-scrollbar::-webkit-scrollbar {
     @apply mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-10;
   }
 
+  /* Small label above a heading, wrapped in green angle brackets like an
+     HTML tag: <LABEL>. */
   .kicker {
-    @apply inline-flex items-center gap-2.5 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-700;
+    @apply inline-flex items-center gap-1 font-mono text-xs font-medium uppercase tracking-[0.18em] text-brand-700;
+  }
+
+  .kicker::before,
+  .kicker::after {
+    color: var(--color-accent-400);
+    font-weight: 700;
+    letter-spacing: 0;
   }
 
   .kicker::before {
-    content: "";
-    display: inline-block;
-    width: 9px;
-    height: 9px;
-    background: var(--color-accent-400);
+    content: "<";
+  }
+
+  /* The label's letter spacing leaves a gap after its last letter, so the
+     closing bracket is pulled back to sit as close as the opening one. */
+  .kicker::after {
+    content: ">";
+    margin-left: -0.18em;
   }
 
   .kicker-light {
@@ -119,6 +131,10 @@ html.overlay-scrollbar::-webkit-scrollbar {
 
   /* Button shapes and resting colors. Hover behavior lives in the
      unlayered "Button hover" block below. */
+  :is(.btn, .btn-green, .btn-outline, .btn-outline-light, .btn-light) {
+    position: relative;
+  }
+
   .btn {
     @apply inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-60 focus-visible:outline-brand-600;
   }
@@ -513,7 +529,8 @@ html.lenis body {
     background-color 0.4s ease,
     border-color 0.4s ease,
     color 0.4s ease,
-    gap 0.35s ease;
+    gap 0.35s ease,
+    min-width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :is(.btn, .btn-green, .btn-outline, .btn-outline-light, .btn-light) > svg {
@@ -576,7 +593,7 @@ html.lenis body {
     animation: btn-ring 0.6s ease-in-out infinite alternate;
   }
 
-  :is(.btn, .btn-green, .btn-outline, .btn-outline-light, .btn-light):hover > :is(.lucide-download, .lucide-file-down) {
+  :is(.btn, .btn-green, .btn-outline, .btn-outline-light, .btn-light):hover > :is(.lucide-download, .lucide-file-down, .lucide-arrow-down) {
     animation: btn-drop 0.6s ease-in-out infinite alternate;
   }
 }
@@ -653,14 +670,27 @@ html.lenis body {
 .hero-cta {
   width: auto;
   padding: 0.625rem 1rem;
-  gap: 0.5rem;
   white-space: nowrap;
 }
 
-.hero-cta > svg {
-  width: 1rem;
-  opacity: 1;
-  transform: none;
+/* The clickable hero button sits on top of a hidden copy that holds its
+   place, so on hover it can grow to the right (arrow sliding out) without
+   moving anything around it. */
+.hero-cta-live {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 100%;
+}
+
+@media (hover: hover) {
+  .hero-cta-live:hover {
+    min-width: calc(100% + 1.5rem);
+  }
+}
+
+.hero-cta-live:focus-visible {
+  min-width: calc(100% + 1.5rem);
 }
 
 /* Underline that slides in from the left on hover and leaves to the right.
@@ -834,5 +864,446 @@ html[data-route="in"] main {
     transform: none;
     transition: none;
     animation: none;
+  }
+}
+
+/* Event pop-up (components/past-event-card.tsx): fades in, panel rises. */
+@keyframes event-popup-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes event-popup-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.event-popup {
+  animation: event-popup-in 0.2s ease both;
+}
+
+.event-popup-panel {
+  animation: event-popup-panel-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-popup,
+  .event-popup-panel {
+    animation: none;
+  }
+}
+
+/* Pinned page hero: the purple title band stays put under the header while
+   the rest of the page slides up over it, as on the home page. The exact
+   pin point is set by components/hero-pin.tsx so a hero taller than the
+   screen scrolls into full view before it pins. */
+.page-hero {
+  position: sticky;
+  top: var(--hero-pin-top, 65px);
+  z-index: 0;
+}
+
+@layer base {
+  .page-hero ~ * {
+    position: relative;
+    z-index: 1;
+    background-color: #ffffff;
+  }
+}
+
+/* The sheet that slides up over a pinned hero gets softly rounded top
+   corners, so the hero shows through at the edges as it is covered. */
+.page-hero + *,
+.page-rise {
+  border-top-left-radius: 1.25rem;
+  border-top-right-radius: 1.25rem;
+}
+
+/* The home page sheet wraps several sections, so it clips them to its
+   rounded corners. */
+.page-rise {
+  overflow: clip;
+}
+
+/* Footer links: a green arrow fades in to the right of the words on hover,
+   sliding from left to right. It is positioned outside the link's own box,
+   so nothing shifts when it appears. */
+.footer-link {
+  position: relative;
+}
+
+.footer-link::after {
+  content: "";
+  position: absolute;
+  left: calc(100% + 0.5rem);
+  top: 50%;
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.5rem;
+  background-color: var(--color-accent-400);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") center / contain no-repeat;
+  opacity: 0;
+  transform: translateX(-0.6rem);
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.footer-link:hover::after,
+.footer-link:focus-visible::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-link::after {
+    transition: opacity 0.15s ease;
+    transform: none;
+  }
+}
+
+/* Hero buttons lined up on their right edge: they grow to the left on hover
+   instead, so that edge stays put. */
+.hero-cta-end .hero-cta-live {
+  left: auto;
+  right: 0;
+}
+
+/* Every page hero fills the screen below the header, so no white shows until
+   the visitor scrolls. .page-hero-auto opts a hero out (single event pages). */
+.page-hero {
+  display: flex;
+  align-items: center;
+  min-height: calc(100svh - 65px);
+}
+
+@media (min-width: 1024px) {
+  .page-hero {
+    min-height: calc(100svh - 73px);
+  }
+}
+
+.page-hero > * {
+  width: 100%;
+}
+
+.page-hero.page-hero-auto {
+  display: block;
+  min-height: 0;
+}
+
+/* Hero with text on the left and a photo or video on the right. On wide
+   screens it reaches up to 9rem into each page margin, so the right side can
+   be large without squeezing the title. */
+.hero-split {
+  --hero-reach: clamp(0px, calc((100vw - 72rem) / 2 - 1rem), 12rem);
+  display: grid;
+  align-items: center;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: calc(72rem + 2 * var(--hero-reach));
+  margin-inline: auto;
+  padding-block: 3rem;
+  padding-inline: max(1.25rem, calc(2.5rem - var(--hero-reach)));
+}
+
+@media (min-width: 1024px) {
+  .hero-split {
+    grid-template-columns: fit-content(31rem) minmax(0, 1fr);
+    gap: 3rem;
+  }
+
+  /* The main informational heroes use the full band more confidently: a
+     larger headline and lede on the left, with extra room for the photo. */
+  .hero-split-feature {
+    grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
+    gap: clamp(2.5rem, 3vw, 4rem);
+    padding-block: 2rem;
+  }
+
+  .hero-split-feature > :first-child {
+    padding-left: clamp(4rem, 6vw, 7rem);
+  }
+
+  .hero-split-feature.donate-hero > :first-child {
+    padding-left: clamp(2.75rem, 4.5vw, 5.5rem);
+  }
+
+  .hero-split-feature h1 {
+    font-size: clamp(3.25rem, 3.6vw, 4rem);
+    line-height: 1.03;
+  }
+
+  .hero-split-feature h1 + p {
+    font-size: 1.25rem;
+    line-height: 1.65;
+  }
+}
+
+/* Give the Resources intro a little more breathing room from the left edge
+   without tightening the layout on phones. */
+@media (min-width: 640px) {
+  .resources-hero-copy {
+    padding-left: clamp(1.5rem, 4vw, 4rem);
+  }
+}
+
+/* The link at the bottom of a step box. Hovering the link itself (not the
+   box) makes it grow a little, lift up and to the right, and turn green. */
+.step-link {
+  /* Grows from its bottom-left corner, so the growth also heads up and to
+     the right. */
+  transform-origin: left bottom;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
+}
+
+.step-link:hover,
+.step-link:focus-visible {
+  transform: translate(4px, -4px) scale(1.06);
+  color: var(--color-accent-700);
+  text-decoration-color: var(--color-accent-700);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-link {
+    transition: color 0.15s ease;
+  }
+
+  .step-link:hover,
+  .step-link:focus-visible {
+    transform: none;
+  }
+}
+
+/* Photo viewers: moving to the next photo swipes it in from the right (the
+   picture travels left); going back swipes it in from the left. */
+@keyframes swipe-in-next {
+  from {
+    transform: translateX(18%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes swipe-in-prev {
+  from {
+    transform: translateX(-18%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.swipe-next {
+  animation: swipe-in-next 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.swipe-prev {
+  animation: swipe-in-prev 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swipe-next,
+  .swipe-prev {
+    animation-duration: 0.01ms;
+  }
+}
+
+/* Gallery "Play all" button: the label is tucked away and slides out to the
+   left when the button is hovered or focused. Screens without hover always
+   show it. */
+.play-all-label {
+  display: block;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-left: 0;
+  transition: max-width 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    padding-left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* On hover the whole button also lifts up and to the left, the way it
+   grows. */
+.play-all {
+  transition: translate 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease !important;
+}
+
+.play-all:hover,
+.play-all:focus-visible {
+  translate: -4px -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .play-all:hover,
+  .play-all:focus-visible {
+    translate: none;
+  }
+}
+
+.play-all:hover .play-all-label,
+.play-all:focus-visible .play-all-label {
+  max-width: 16rem;
+  padding-left: 1.75rem;
+}
+
+@media (hover: none) {
+  .play-all-label {
+    max-width: 16rem;
+    padding-left: 1.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .play-all-label {
+    transition: none;
+  }
+}
+
+/* Space beside the Play all button. On
+   touch screens the label always shows, so the holder is as wide as the full
+   button there. */
+.play-all-holder {
+  margin-right: clamp(11.5rem, 14vw, 18rem);
+}
+
+@media (hover: none) {
+  .play-all-holder {
+    width: 17rem !important;
+    margin-right: 0;
+  }
+}
+
+/* The play button on videos grows leftward when the button itself is
+   hovered to show its label, the
+   same way as the Play all button on the Gallery page. */
+.video-play-label {
+  display: block;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-left: 0;
+  transition: max-width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    padding-left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.video-play-button:hover .video-play-label,
+.video-play:focus-visible .video-play-label {
+  max-width: 10rem;
+  padding-left: 1.125rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-play-label {
+    transition: none;
+  }
+}
+
+/* A play button that grows to the right puts its label space on the right. */
+.video-play-button:hover .video-play-label-right,
+.video-play:focus-visible .video-play-label-right {
+  padding-left: 0;
+  padding-right: 1.125rem;
+}
+
+.video-play-label-right {
+  transition: max-width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    padding-right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The E-Board hero photo stops short of the title at every width. The title
+   block is about 26.75rem wide and its right edge sits the container's
+   right padding in from the screen edge, minus the extra it is pushed into
+   the margin on wide screens. The photo ends 3rem before the title, which
+   leaves room for the purple panel behind it. */
+.eboard-hero-photo {
+  max-width: calc(
+    100vw -
+      (
+        max(2.5rem, (100vw - 72rem) / 2 + 2.5rem) -
+          clamp(0px, (100vw - 72rem) / 2 - 1.5rem, 11rem)
+      ) -
+      26.75rem - 3rem
+  );
+}
+
+/* On touch screens, standalone text links and small buttons get at least a
+   44px tall area to tap, without changing how they look. */
+@media (pointer: coarse) {
+  .tap-target {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+
+/* Video play buttons gently breathe until hovered, to draw the eye. They
+   hold still for visitors who prefer less motion. */
+@keyframes play-breathe {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.08; }
+}
+
+.video-play-button {
+  animation: play-breathe 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.video-play-button:hover,
+.video-play:focus-visible .video-play-button {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-play-button {
+    animation: none;
+  }
+}
+
+/* Steady hover: buttons and links that move on hover get an invisible zone
+   around them while hovered, so the cursor stays "on" them as they shift
+   and the effect cannot flicker on and off at the edge. */
+.step-link,
+.footer-link {
+  position: relative;
+}
+
+:is(.btn, .btn-green, .btn-outline, .btn-outline-light, .btn-light, .step-link, .footer-link, .play-all):hover::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+}
+
+/* The breathing play button changes size on its own, so its zone is
+   always there. */
+.video-play-button::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 9999px;
+}
+
+/* iPhones zoom the whole page when a form field with text under 16px is
+   tapped. Phone-sized screens get 16px fields so the page stays put. */
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  select,
+  textarea {
+    font-size: 16px;
   }
 }

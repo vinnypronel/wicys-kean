@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Lets the e-board interest form carry a resume up to 4MB (the form
+  // checks the limit; Vercel caps requests at 4.5MB).
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '4.5mb',
+    },
+  },
   turbopack: {
     root: process.cwd(),
   },
@@ -15,11 +22,21 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      { source: "/admin", destination: "/keystatic", permanent: false },
+      // The Join page was folded into Get Involved.
+      { source: "/join", destination: "/get-involved#join", permanent: true },
     ];
   },
   async headers() {
     return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        ],
+      },
       {
         source: "/keystatic/:path*",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
