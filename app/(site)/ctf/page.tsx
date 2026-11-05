@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { ArrowRight, ArrowUpRight, Mail } from 'lucide-react';
+import { ArrowRight, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 import Mascot from '@/components/mascot';
@@ -13,8 +13,6 @@ export const metadata: Metadata = {
   description:
     'WiCyS Kean’s Capture the Flag competition: beginner-friendly cybersecurity challenges, prizes, and a chance to test your skills.',
 };
-
-const CTF_SITE_URL = 'https://www.keanctf.me/';
 
 // A highlight that names one of these organizations shows its logo in place
 // of the word given here.
@@ -70,19 +68,11 @@ export default async function CtfPage() {
             {/* Each button sits on a hidden copy of itself so it can grow to
                 the right on hover without shifting anything. */}
             <div className="mt-9 flex flex-col items-start gap-3">
-              <span className="relative inline-flex">
-                <span aria-hidden className="btn-green hero-cta invisible">
-                  Visit the CTF website
-                </span>
-                <a
-                  href={CTF_SITE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-green hero-cta hero-cta-live"
-                >
-                  Visit the CTF website
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
+              <span
+                aria-disabled="true"
+                className="btn-green hero-cta pointer-events-none cursor-default select-none opacity-60"
+              >
+                Site coming soon
               </span>
               <span className="relative inline-flex">
                 <span aria-hidden className="btn-outline-light hero-cta invisible">
