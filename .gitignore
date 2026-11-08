@@ -56,3 +56,6 @@ next-env.d.ts
 
 # Full-size originals of photos that were re-compressed for the site.
 /photo-originals/
+
+# Private notes (setup, admin, officer guide)
+/docs-private/

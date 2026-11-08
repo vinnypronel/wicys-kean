@@ -1,99 +1,46 @@
-# WiCyS Kean University Student Chapter website
+# WiCyS Kean University
 
-Next.js site with a built-in editor (Keystatic) so e-board members can post
-events, photos, officers, and sponsors without touching code.
+The official website for the Kean University student chapter of Women in
+CyberSecurity (WiCyS).
 
-- Site: pages live in `app/(site)/`
-- Content: YAML files in `content/`, uploaded images in `public/images/uploads/`
-- Editor: `/keystatic` (or `/admin`, which redirects there)
+**Live site:** PLACEHOLDER (add the domain once it is connected)
 
-## Local development
+Designed and built by Vinny Pronel, Web Developer on the WiCyS Kean executive
+board.
 
-```bash
-npm install
-npm run dev
-```
+## What it does
 
-Open http://localhost:3000. The editor at http://localhost:3000/keystatic
-saves straight to the files on your machine when
-`NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO` is blank.
+- Event listings that move from Upcoming to Past on their own, with
+  add-to-calendar buttons and recaps
+- Photo gallery organized by semester and category, with a full-screen viewer
+- Executive board roster, alumni, and a Capture the Flag page
+- Curated, beginner-friendly cybersecurity resources
+- Contact and e-board interest forms backed by a Postgres database
+- A content editor so board members can update the site without touching code
 
-## Going live (one-time setup)
+## Built with
 
-1. Push this repo to GitHub (`vinnypronel/wicys-kean`).
-2. Import the repo in Vercel and deploy.
-3. Create `.env.local` with `NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO=vinnypronel/wicys-kean`,
-   run `npm run dev`, open `/keystatic`, and follow the "Create GitHub App"
-   prompt. Keystatic writes the remaining `KEYSTATIC_*` values into your env
-   file. Install the new GitHub App on the `wicys-kean` repo when GitHub asks.
-4. In the GitHub App settings, add the production callback URL:
-   `https://YOUR-DOMAIN/api/keystatic/github/oauth/callback`.
-5. Copy every value from `.env.local` into Vercel (Settings, Environment
-   Variables), plus `NEXT_PUBLIC_SITE_URL` once there is a custom domain.
-   Redeploy.
-6. Add each officer who will edit the site as a collaborator on the GitHub
-   repo (they need a free GitHub account).
+- Next.js (App Router), React, TypeScript
+- Tailwind CSS
+- Keystatic for content editing
+- Neon Postgres
+- Hosted on Vercel
 
-Every save in the editor becomes a commit on `main`, and Vercel redeploys the
-site in about a minute.
+## Highlights
 
-## Contact form
+- Mobile first: tested from 320px phones up to wide desktops, with a
+  full-screen animated menu on mobile
+- Uploaded photos are resized and recompressed automatically, then served as
+  AVIF or WebP at the size each screen needs
+- Accessible: skip link, keyboard support, readable contrast, and reduced
+  motion respected
+- Private by default: no tracking cookies, and form submissions are visible
+  only to signed-in chapter admins
 
-The form on the Contact page sends email through Resend (resend.com). Add
-these in Vercel (Settings, Environment Variables):
+## Screenshots
 
-- `RESEND_API_KEY`: from the Resend dashboard
-- `CONTACT_TO_EMAIL`: where messages go (defaults to the chapter email)
-- `CONTACT_FROM_EMAIL`: the sender, once a domain is verified in Resend
+PLACEHOLDER (add desktop and mobile screenshots)
 
-Until the key is set, the form tells visitors to email the chapter directly,
-so no messages are lost.
+## License
 
-## Photos
-
-Upload photos as they come off the phone. They are shrunk automatically:
-
-- The "Optimize uploaded images" GitHub Action resizes anything in
-  `public/images/uploads/` to at most 2000px and recompresses it, then commits
-  the smaller file (same name, so nothing breaks).
-- The same script runs before every build (`npm run images` runs it by hand).
-- Next.js then serves each photo as AVIF or WebP at the size the screen needs.
-
-HEIC files are not supported; iPhones convert to JPG when uploading from the
-browser, otherwise export as JPG first.
-
-## Officer guide: updating the site
-
-Go to `/admin` on the live site and sign in with GitHub.
-
-**Add an event.** Activities, Events, Add. Fill in title, type, start time
-(Eastern), location, and description. Add a registration link and flyer if
-you have them. Save. The event shows under Upcoming, gets its own page with
-"Add to calendar" buttons, and moves to Past on its own after it ends.
-
-**Post a recap.** Open the event after it happens and fill in Recap,
-Highlights, and Photos. Everything shows on the event's page and the Past
-events list.
-
-**Add a gallery album.** Activities, Gallery albums, Add. Set the semester,
-academic year (like `2026-2027`), and category, optionally link the event,
-then add photos. Albums linked to an event also show on that event's page.
-
-**Officers.** People, E-board members. Display order controls position
-(1 shows first).
-
-**Sponsors.** Sponsors, Sponsors and partners for logos. Sponsors,
-Sponsorship page for the intro, benefits, and the downloadable PDF packet.
-
-**Scholarship recipients and alumni.** People, Scholarship recipients or
-Alumni. Both show on the E-Board page. A section stays hidden
-until it has at least one real person in it. Entries whose name starts with
-`PLACEHOLDER` are examples and never show on the site.
-
-**Donate page.** Sponsors, Donate page. Add a giving link, Venmo, Cash App, or
-Zelle. Any option left blank is hidden. Only add options the chapter is
-approved to use.
-
-**Get Involved page.** Content, Get involved page for the intro and cards.
-
-**Meeting info, email, socials.** Content, Site settings.
+All rights reserved. The code and content are not licensed for reuse.
