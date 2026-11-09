@@ -83,7 +83,7 @@ export default async function DonatePage() {
         <div className="container-site grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
           <div>
             <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
-              Ways to give
+              How you can help
             </h2>
             {options.length > 0 ? (
               <ul className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -128,8 +128,10 @@ export default async function DonatePage() {
               </ul>
             ) : (
               <p className="mt-8 max-w-xl rounded-xl border border-dashed border-brand-200 bg-white p-7 text-sm leading-relaxed text-ink-soft">
-                Online giving is being set up. In the meantime, reach out and we
-                will help you donate directly.
+                We are still working out how the chapter accepts donations. In
+                the meantime, reach out and we will talk through how you can
+                help. In-kind support like food, prizes, or event supplies is
+                always welcome.
               </p>
             )}
 
@@ -192,11 +194,11 @@ export default async function DonatePage() {
             >
               <p className="text-sm leading-relaxed text-ink-soft">
                 <span className="font-display text-base font-bold tracking-tight text-ink">
-                  Questions about donating?
+                  Want to help out?
                 </span>{' '}
-                We are happy to talk through other ways to give.
+                Reach out for more info and we will figure out the best way together.
               </p>
-              <Link href="/contact?topic=Donations" className="btn-outline px-4 py-2.5">
+              <Link href="/contact?topic=Donations" className="btn-green px-4 py-2.5">
                 <Mail className="h-4 w-4" />
                 Contact us
               </Link>

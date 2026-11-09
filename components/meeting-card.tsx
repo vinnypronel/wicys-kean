@@ -1,14 +1,27 @@
 import { CalendarClock } from 'lucide-react';
 
-// The chapter's regular meeting, shown when no other events are on the
+type MeetingSettings = {
+  meetingDay?: string | null;
+  meetingTime?: string | null;
+  meetingLocation?: string | null;
+} | null;
+
+// The chapter's weekly event slot, shown when no other events are on the
 // calendar. The day, time and room come from the site settings.
 export default function MeetingCard({
-  summary,
+  settings,
   compact = false,
 }: {
-  summary: string;
+  settings: MeetingSettings;
   compact?: boolean;
 }) {
+  const day = settings?.meetingDay?.trim().replace(/s$/i, '');
+  const details = [settings?.meetingTime, settings?.meetingLocation]
+    .map((part) => part?.trim())
+    .filter(Boolean)
+    .join(' · ');
+  if (!day && !details) return null;
+
   return (
     <div
       className={`flex items-start gap-4 rounded-xl border border-brand-200 bg-white ${
@@ -20,16 +33,18 @@ export default function MeetingCard({
       </span>
       <div>
         <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent-700">
-          Every week
+          Weekly event
         </p>
         <p
           className={`mt-1 font-display font-bold tracking-tight text-ink ${
             compact ? 'text-base' : 'text-lg'
           }`}
         >
-          General body meeting
+          {day ? `Every ${day}` : 'Every week'}
         </p>
-        <p className="mt-1 text-sm leading-relaxed text-ink-soft">{summary}</p>
+        {details ? (
+          <p className="mt-1 text-sm leading-relaxed text-ink-soft">{details}</p>
+        ) : null}
         <p className="mt-1 text-sm leading-relaxed text-ink-soft">
           Unless an event says otherwise. Open to every Kean student.
         </p>

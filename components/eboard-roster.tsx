@@ -101,7 +101,7 @@ function LeadCard({ member }: { member: RosterMember }) {
           {member.name}
         </h3>
         {member.major ? (
-          <p className="mt-1.5 text-sm text-ink-soft">{member.major}</p>
+          <p className="mt-1.5 text-sm text-ink-soft"><MajorLine text={member.major} /></p>
         ) : null}
         {member.duties ? (
           <p className="mt-1.5 text-sm leading-snug text-ink">{member.duties}</p>
@@ -181,11 +181,6 @@ function OfficerPortrait({ member }: { member: RosterMember }) {
       <div
         className="relative flex min-w-0 flex-1 flex-col border-t-4 border-plum p-5 @min-[24rem]:border-l-4 @min-[24rem]:border-t-0"
       >
-        {createElement(icon, {
-          'aria-hidden': true,
-          weight: 'duotone',
-          className: `pointer-events-none absolute right-5 top-1/2 h-20 w-20 -translate-y-1/2 opacity-[0.08] text-brand-600`,
-        })}
         {/* The role sits beside its icon. */}
         <div className="flex items-center gap-2.5">
           <span className="shrink-0 text-plum">
@@ -199,7 +194,7 @@ function OfficerPortrait({ member }: { member: RosterMember }) {
           {member.name}
         </h3>
         {member.major ? (
-          <p className="mt-1 text-xs text-ink-soft">{member.major}</p>
+          <p className="mt-1 text-xs text-ink-soft"><MajorLine text={member.major} /></p>
         ) : null}
         {member.duties ? (
           <p className="mt-1 text-xs leading-snug text-ink">{member.duties}</p>
@@ -224,6 +219,29 @@ function OfficerPortrait({ member }: { member: RosterMember }) {
       </div>
     </article>
     </div>
+  );
+}
+
+// Each comma-separated part (major, option, graduation term) on its own
+// line. A bare year like '28 stays on the line before it.
+function MajorLine({ text }: { text: string }) {
+  const parts: string[] = [];
+  for (const part of text.split(', ')) {
+    if (parts.length > 0 && /^'\d{2}$/.test(part)) {
+      parts[parts.length - 1] += `, ${part}`;
+    } else {
+      parts.push(part);
+    }
+  }
+  return (
+    <>
+      {parts.map((part, index) => (
+        <span key={index} className="block">
+          {part}
+          {index < parts.length - 1 ? ',' : null}
+        </span>
+      ))}
+    </>
   );
 }
 
@@ -257,6 +275,9 @@ function SupportCard({ member }: { member: RosterMember }) {
           {createElement(icon, { 'aria-hidden': true, weight: 'duotone', className: 'h-4 w-4 shrink-0' })}
           {member.role}
         </p>
+        {member.major ? (
+          <p className="w-full text-xs text-ink-soft">{member.major}</p>
+        ) : null}
       </div>
       {member.linkedinUrl ? (
         <a

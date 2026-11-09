@@ -11,7 +11,7 @@ import { meetingSummary } from '@/lib/format';
 export const metadata: Metadata = {
   title: 'Events',
   description:
-    'Upcoming and past events from WiCyS at Kean University: general body meetings, workshops, guest speakers, networking nights, and conferences.',
+    'Upcoming and past events from WiCyS at Kean University: weekly chapter events, workshops, guest speakers, networking nights, and conferences.',
 };
 
 // Re-check hourly so finished events move to Past without a redeploy.
@@ -39,7 +39,7 @@ export default async function EventsPage() {
                   <span className="block">this semester?</span>
                 </>
               }
-              lede="General body meetings, hands-on workshops, guest speakers, conference trips, and networking events. Registration links go live as events are announced."
+              lede="Weekly chapter events, hands-on workshops, guest speakers, conference trips, and networking events. Registration links go live as events are announced."
             />
           </div>
           <HeroPhoto
@@ -65,7 +65,7 @@ export default async function EventsPage() {
           ) : (
             // With nothing else scheduled, the weekly meeting still shows.
             <div className="mt-6 max-w-xl space-y-4">
-              {meeting ? <MeetingCard summary={meeting} /> : null}
+              {meeting ? <MeetingCard settings={settings} /> : null}
               <p className="text-sm leading-relaxed text-ink-soft">
                 Workshops, speakers, and other events are announced on our
                 Discord and Instagram first, so make sure you are following.

@@ -29,17 +29,15 @@ type Step = {
 };
 
 function StepGroup({
-  kicker,
   title,
   steps,
 }: {
-  kicker: string;
   title: string;
   steps: Step[];
 }) {
   return (
     <div>
-      <SectionHeading kicker={kicker} title={title} />
+      <SectionHeading title={title} />
       <ol className="mt-8 grid gap-6 md:grid-cols-3">
         {steps.map(({ Icon, title: stepTitle, description, link }, index) => (
           <li
@@ -107,7 +105,7 @@ export function ChapterSteps({
       title: 'Join our Discord',
       description: (
         <>
-          Discord is where we post meeting reminders, event news, and
+          Discord is where we post event reminders, chapter news, and
           opportunities. It is the fastest way to stay in the loop.
         </>
       ),
@@ -115,11 +113,11 @@ export function ChapterSteps({
     },
     {
       Icon: Users,
-      title: 'Come to a meeting',
+      title: 'Come to an event',
       description: (
         <>
-          We meet on Tuesdays from 2:15–3:30 PM in GLAB 208 unless stated otherwise.
-          Show up to any meeting. There is no application or cut-off date
+          We hold an event every Tuesday from 2:15–3:30 PM in GLAB 208 unless stated otherwise.
+          Show up to any event. There is no application or cut-off date
           during the semester.
         </>
       ),
@@ -148,7 +146,7 @@ export function ChapterSteps({
 
   return (
     <div id="join" style={{ scrollMarginTop: '6.5rem' }}>
-      <StepGroup kicker="WiCyS Kean" title="Join the Kean chapter" steps={steps} />
+      <StepGroup title="Join the Kean chapter!" steps={steps} />
       <p className="mt-5 text-sm leading-relaxed text-ink-soft">
         Chapter membership is free and open to every Kean student, whatever
         your major or experience level. Allies are always welcome.
@@ -205,8 +203,7 @@ export function NationalSteps() {
   return (
     <div id="national" style={{ scrollMarginTop: '6.5rem' }}>
       <StepGroup
-        kicker="National WiCyS"
-        title="Register with national WiCyS"
+        title="Register with national WiCyS!"
         steps={steps}
       />
       {/* The fee is the student rate WiCyS has published. Update it here if

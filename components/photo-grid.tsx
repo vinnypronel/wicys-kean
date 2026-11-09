@@ -1,7 +1,8 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import { useCallback, useEffect, useState, type CSSProperties } from 'react';
 
@@ -56,6 +57,7 @@ export default function PhotoGrid({
   watermark,
   title,
   rowHeight = 'clamp(130px, 15vw, 290px)',
+  viewAllHref,
 }: {
   photos: GridPhoto[];
   gridClassName?: string;
@@ -71,6 +73,9 @@ export default function PhotoGrid({
   title?: string;
   // Target height of a justified row, as any CSS length.
   rowHeight?: string;
+  // When set, the viewer shows a button in the bottom right that goes to
+  // this page, such as the full gallery.
+  viewAllHref?: string;
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   // Width divided by height for each photo, learned as the images load.
@@ -363,6 +368,20 @@ export default function PhotoGrid({
                     <ChevronRight className="h-6 w-6" />
                   </button>
                 </>
+              ) : null}
+              {viewAllHref ? (
+                <Link
+                  href={viewAllHref}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    close();
+                  }}
+                  className="btn-green px-4 py-2.5"
+                  style={{ position: 'absolute', zIndex: 1, right: '1rem', bottom: '1rem' }}
+                >
+                  View full gallery
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
               ) : null}
             </div>,
             document.body,

@@ -122,9 +122,8 @@ export default async function GetInvolvedPage() {
           {/* The national "Join WiCyS!" video, leading into national sign-up. */}
           <div className="mt-16 grid items-center gap-8 lg:grid-cols-[1fr_1.25fr] lg:gap-14">
             <div>
-              <p className="kicker">From national WiCyS</p>
-              <h2 className="mt-4 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-                See what you would be joining
+              <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+                See what you would be joining!
               </h2>
               <p className="mt-4 max-w-md text-base leading-relaxed text-ink-soft">
                 WiCyS Kean is a student chapter of Women in CyberSecurity. This
@@ -149,7 +148,7 @@ export default async function GetInvolvedPage() {
               <p className="mt-4 max-w-md text-base leading-relaxed text-ink-soft">
                 Joining the Kean chapter is free. National WiCyS membership
                 is optional and costs students $20 a year. Register online,
-                then stop by our next meeting so we can meet you.
+                then stop by our next event so we can meet you.
               </p>
               <p className="mt-3 max-w-md text-base leading-relaxed text-ink-soft">
                 Want to support from afar? Donations and sponsorships help

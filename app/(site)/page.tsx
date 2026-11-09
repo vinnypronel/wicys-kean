@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { DiscordLogo, InstagramLogo } from '@/components/brand-icons';
 import HeroVideo from '@/components/hero-video';
 import MeetingCard from '@/components/meeting-card';
+import PhotoGrid from '@/components/photo-grid';
 import SectionHeading from '@/components/section-heading';
 import {
   filterPhotos,
@@ -151,22 +152,7 @@ export default async function HomePage() {
       <div className="page-rise relative z-10 bg-surface">
       <section className="bg-surface py-20">
         <div className="container-site">
-          <div className="flex items-start justify-between gap-6 sm:gap-8">
-            <SectionHeading
-              kicker="This semester"
-              title="What we are working on"
-              lede="Announcements from the chapter, updated by the e-board throughout the semester."
-            />
-            <div className="shrink-0 self-start pt-1 sm:pt-2">
-              <Image
-                src="/images/kean-seal.png"
-                alt="Kean University Seal"
-                width={128}
-                height={128}
-                className="h-20 w-20 object-contain opacity-90 transition-opacity hover:opacity-100 sm:h-28 sm:w-28 lg:h-32 lg:w-32"
-              />
-            </div>
-          </div>
+          <SectionHeading kicker="This semester" title="What we are working on" />
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             <div className="flex flex-col rounded-xl border border-brand-100 bg-white p-7">
               <p className="kicker">Upcoming events</p>
@@ -201,7 +187,7 @@ export default async function HomePage() {
                       shows. */}
                   {meetingSummary(settings) ? (
                     <div className="mt-6">
-                      <MeetingCard summary={meetingSummary(settings) ?? ''} compact />
+                      <MeetingCard settings={settings} compact />
                     </div>
                   ) : null}
                   <p className="mt-5 flex-1 text-sm leading-relaxed text-ink-soft">
@@ -242,7 +228,7 @@ export default async function HomePage() {
               )}
             </div>
 
-            <div className="rounded-xl border border-accent-200 bg-accent-50 p-7">
+            <div className="flex flex-col rounded-xl border border-accent-200 bg-accent-50 p-7">
               <p className="kicker !text-accent-700">Current initiative</p>
               <h3 className="mt-6 font-display text-xl font-bold tracking-tight text-ink">
                 {announcements?.initiativeTitle ?? 'Current initiative coming soon'}
@@ -266,6 +252,12 @@ export default async function HomePage() {
                   ))}
                 </ul>
               ) : null}
+              <div className="mt-auto flex justify-end pt-7">
+                <Link href="/ctf" className="btn-outline whitespace-nowrap">
+                  See the CTF page
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
 
             <div className="flex flex-col rounded-xl border border-plum bg-plum p-7 text-brand-100">
@@ -277,22 +269,35 @@ export default async function HomePage() {
                 {announcements?.sponsorshipBlurb ??
                   'Support our students through funding, prizes, speakers, and more.'}
               </p>
-              <Link href="/sponsors" className="btn-outline-light mt-7 self-end">
-                Become a sponsor
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              <div className="mt-7 flex flex-wrap items-end justify-between gap-4">
+                <span className="grid h-20 w-20 shrink-0 place-items-center rounded-full bg-white p-1.5">
+                  <Image
+                    src="/images/kean-seal.png"
+                    alt="Kean University Seal"
+                    width={128}
+                    height={128}
+                    className="h-full w-full object-contain"
+                  />
+                </span>
+                <Link href="/sponsors" className="btn-outline-light ml-auto whitespace-nowrap">
+                  Become a sponsor
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="pb-20 pt-12 lg:pt-10">
         <div className="container-site grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
-          <SectionHeading
-            kicker="About the chapter"
-            title="A supportive community built around security"
-            lede="WiCyS Kean is a student chapter of Women in CyberSecurity, a national nonprofit dedicated to recruiting, retaining, and advancing women in the field. Everyone is welcome here. Our members come from every major and every skill level, united by curiosity about how the digital world works and how to protect it."
-          />
+          <div className="lg:mt-12">
+            <SectionHeading
+              kicker="About the chapter"
+              title="A supportive community built around security"
+              lede="WiCyS Kean is a student chapter of Women in CyberSecurity, a national nonprofit dedicated to recruiting, retaining, and advancing women in the field. Everyone is welcome here. Our members come from every major and every skill level, united by curiosity about how the digital world works and how to protect it."
+            />
+          </div>
           <ul className="mt-8 grid gap-4 self-center sm:grid-cols-2 lg:mt-14">
             {WHAT_WE_DO.map(({ label, Icon }, index) => {
               // Checkerboard: purple and green swap places on each row.
@@ -388,21 +393,22 @@ export default async function HomePage() {
                 title={latestAlbum ? latestAlbum.title : 'Chapter life'}
               />
             </div>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {teaserPhotos.slice(0, 4).map((photo, index) => (
-                <div
-                  key={`${photo}-${index}`}
-                  className="relative aspect-[4/3] overflow-hidden rounded-md border border-brand-100 bg-surface"
-                >
-                  <Image
-                    src={photo}
-                    alt=""
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
+            {/* Tapping a photo opens the same viewer as the gallery, limited
+                to these four. */}
+            <div className="mt-10">
+              <PhotoGrid
+                gridClassName="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                title={latestAlbum?.title}
+                viewAllHref="/gallery"
+                watermark={
+                  latestAlbum?.externalPhotos ? undefined : '©2026 WiCyS Kean'
+                }
+                photos={teaserPhotos.slice(0, 4).map((src, index) => ({
+                  src,
+                  alt: `${latestAlbum?.title ?? 'Chapter'} photo ${index + 1}`,
+                }))}
+              />
             </div>
             <div className="mt-8 flex justify-end">
               <Link
