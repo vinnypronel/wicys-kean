@@ -68,7 +68,7 @@ export default async function HomePage() {
     getGalleryAlbums(),
   ]);
 
-  const featuredEvents = upcoming.slice(0, 2);
+  const featuredEvents = upcoming.slice(0, 3);
   const latestAlbum =
     albums.find((album) => filterPhotos(album.photos).length > 0) ?? albums[0];
   const teaserPhotos = latestAlbum ? filterPhotos(latestAlbum.photos) : [];
@@ -175,13 +175,12 @@ export default async function HomePage() {
                       </li>
                     ))}
                   </ul>
-                  <Link
-                    href="/events"
-                    className="group mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-brand-700 transition-colors hover:text-accent-700"
-                  >
-                    <span>View all events</span>
-                    <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-                  </Link>
+                  <div className="mt-auto flex justify-end pt-7">
+                    <Link href="/events" className="btn-outline whitespace-nowrap">
+                      View all events
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
                 </>
               ) : (
                 <>
@@ -271,8 +270,8 @@ export default async function HomePage() {
                 {announcements?.sponsorshipBlurb ??
                   'Support our students through funding, prizes, speakers, and more.'}
               </p>
-              <div className="mt-7 flex flex-wrap items-end justify-between gap-4">
-                <span className="grid h-20 w-20 shrink-0 place-items-center rounded-full bg-white p-1.5">
+              <div className="mt-7 flex flex-col items-start gap-4 xl:flex-row xl:flex-nowrap xl:items-end xl:justify-between">
+                <span className="grid h-20 w-20 shrink-0 place-items-center rounded-full bg-white p-1.5 xl:h-16 xl:w-16">
                   <Image
                     src="/images/kean-seal.png"
                     alt="Kean University Seal"
@@ -281,7 +280,7 @@ export default async function HomePage() {
                     className="h-full w-full object-contain"
                   />
                 </span>
-                <Link href="/sponsors" className="btn-outline-light ml-auto whitespace-nowrap">
+                <Link href="/sponsors" className="btn-outline-light self-end whitespace-nowrap">
                   Become a sponsor
                   <ArrowRight className="h-4 w-4" />
                 </Link>
