@@ -45,6 +45,13 @@ export default function SmoothScrollProvider({
     const thumb = thumbRef.current;
     if (!thumb) return;
 
+    // Touchscreens keep the phone's own scroll indicator, which follows a
+    // swipe smoothly. The custom bar is for mouse and trackpad screens.
+    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+      thumb.hidden = true;
+      return;
+    }
+
     const root = document.documentElement;
     let idleTimer = 0;
     let drag: { y: number; scroll: number } | null = null;

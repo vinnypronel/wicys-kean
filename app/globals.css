@@ -1307,3 +1307,34 @@ html[data-route="in"] main {
     font-size: 16px;
   }
 }
+
+/* Phones: a small Play all button sitting right under View all photos. */
+@media (max-width: 767px) {
+  .play-all-holder {
+    width: auto !important;
+    height: auto !important;
+    margin-right: 0;
+    margin-top: -1.25rem;
+  }
+
+  .play-all {
+    position: static !important;
+    height: 3rem !important;
+  }
+
+  .play-all-icon {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+
+  .play-all-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .play-all-label {
+    max-width: 16rem;
+    padding-left: 1.25rem;
+    font-size: 0.95rem;
+  }
+}

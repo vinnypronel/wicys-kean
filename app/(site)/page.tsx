@@ -75,10 +75,11 @@ export default async function HomePage() {
   return (
     <>
       <section className="sticky top-0 z-0 flex h-screen items-center overflow-hidden bg-plum">
-        {/* Phones, and anyone who has asked for less motion, keep the still
-            poster, so the 2MB video is never downloaded for them. */}
+        {/* Phones play a small copy of the video. Anyone who has asked for
+            less motion keeps the still poster. */}
         <HeroVideo
           src="/videos/kean-hero-directional-v3.mp4"
+          mobileSrc="/videos/kean-hero-directional-v3-mobile.mp4"
           poster="/images/kean-hero-muted.jpg"
           className="absolute inset-0 h-full w-full object-cover [filter:saturate(0.62)_brightness(0.82)_contrast(1.06)]"
         />

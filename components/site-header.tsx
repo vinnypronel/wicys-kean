@@ -57,6 +57,16 @@ export default function SiteHeader({
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  // Below the desktop nav width, only the home page keeps the see-through
+  // header, so the logo never blends into a busy photo.
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 1023px)');
+    const update = () => setNarrow(query.matches);
+    update();
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
   const [prevPathname, setPrevPathname] = useState(pathname);
 
   if (prevPathname !== pathname) {
@@ -156,7 +166,8 @@ export default function SiteHeader({
   // Pages whose hero runs up behind the header: it floats see-through over
   // the hero and turns solid white once the page is scrolled.
   const overlayHeader = OVERLAY_HEADER_PATHS.includes(pathname);
-  const transparentAtTop = overlayHeader && !scrolled && !menuOpen && !searchOpen;
+  const canBeClear = overlayHeader && (pathname === '/' || !narrow);
+  const transparentAtTop = canBeClear && !scrolled && !menuOpen && !searchOpen;
   const iconButtonTone = transparentAtTop
     ? 'text-white/90 hover:bg-white/10 hover:text-white'
     : 'text-ink-soft hover:bg-brand-50 hover:text-brand-700';

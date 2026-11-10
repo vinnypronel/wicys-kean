@@ -105,6 +105,7 @@ export default function GallerySlideshow({ slides }: { slides: Slide[] }) {
           }}
         >
           <span
+            className="play-all-icon"
             style={{
               display: 'grid',
               placeItems: 'center',
