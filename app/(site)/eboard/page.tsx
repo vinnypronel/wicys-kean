@@ -17,6 +17,7 @@ import {
 } from '@/lib/content';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/eboard' },
   title: 'Executive Board',
   description:
     'Meet the executive board of WiCyS at Kean University and the alumni who led the chapter before us.',

@@ -17,6 +17,7 @@ import SectionHeading from '@/components/section-heading';
 import { getResourceLinks } from '@/lib/content';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/resources' },
   title: 'Resources',
   description:
     'Cybersecurity learning platforms, internship and career tools, scholarships, certifications, and conferences curated by WiCyS at Kean University.',

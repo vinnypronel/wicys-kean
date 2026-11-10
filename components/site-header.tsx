@@ -1,12 +1,12 @@
 'use client';
 
-import { ArrowRight, Mail, MessagesSquare, Search, X } from 'lucide-react';
+import { ArrowRight, Mail, Search, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
 
-import { InstagramGlyph, LinkedinGlyph } from '@/components/brand-icons';
+import { DiscordGlyph, InstagramGlyph, LinkedinGlyph } from '@/components/brand-icons';
 import SiteSearch from '@/components/site-search';
 
 const NAV_LINKS = [
@@ -27,7 +27,7 @@ export type HeaderSocial = {
 };
 
 const SOCIAL_ICONS = {
-  Discord: MessagesSquare,
+  Discord: DiscordGlyph,
   Instagram: InstagramGlyph,
   LinkedIn: LinkedinGlyph,
   Email: Mail,

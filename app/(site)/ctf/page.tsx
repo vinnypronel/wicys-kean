@@ -9,6 +9,7 @@ import SectionHeading from '@/components/section-heading';
 import { filterPhotos, getCtfPage, getSiteSettings } from '@/lib/content';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/ctf' },
   title: 'Capture the Flag',
   description:
     'WiCyS Kean’s Capture the Flag competition: beginner-friendly cybersecurity challenges, prizes, and a chance to test your skills.',

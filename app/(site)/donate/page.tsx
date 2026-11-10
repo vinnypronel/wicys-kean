@@ -17,6 +17,7 @@ import SectionHeading from '@/components/section-heading';
 import { getDonatePage, getSiteSettings } from '@/lib/content';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/donate' },
   title: 'Donate',
   description:
     'Support WiCyS at Kean University. Donations help cover prizes for our Capture the Flag competition and food and supplies for our events.',

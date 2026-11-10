@@ -6,6 +6,7 @@ import { filterPhotos, getAllEvents, getGalleryAlbums } from '@/lib/content';
 import { ALBUM_CATEGORY_LABELS } from '@/lib/format';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/gallery' },
   title: 'Gallery',
   description:
     'Photos from WiCyS Kean events: meetings, workshops, Capture the Flag competitions, and conferences, organized by event, semester, and academic year.',

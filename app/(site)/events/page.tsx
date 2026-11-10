@@ -9,6 +9,7 @@ import { getPastEvents, getSiteSettings, getUpcomingEvents } from '@/lib/content
 import { meetingSummary } from '@/lib/format';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/events' },
   title: 'Events',
   description:
     'Upcoming and past events from WiCyS at Kean University: weekly chapter events, workshops, guest speakers, networking nights, and conferences.',

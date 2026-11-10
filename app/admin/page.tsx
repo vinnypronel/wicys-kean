@@ -9,7 +9,7 @@ import AdminDashboardView, {
 } from '@/components/admin-dashboard-view';
 
 export const metadata: Metadata = {
-  title: 'Admin Dashboard | WiCyS Kean',
+  title: 'Admin Dashboard',
   description: 'Manage 2027–2028 E-Board applications and contact inquiries.',
   // Kept out of search results.
   robots: { index: false, follow: false },

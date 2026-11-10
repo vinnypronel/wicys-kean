@@ -114,6 +114,7 @@ export default function GalleryHero({
       />
 
       <div
+        className="gallery-hero-row"
         style={{
           position: 'relative',
           width: '100%',
@@ -130,7 +131,7 @@ export default function GalleryHero({
           gap: '2.5rem 3rem',
         }}
       >
-        <div>
+        <div className="gallery-hero-text">
           <h1
             className="font-display font-bold tracking-tight text-white"
             style={{
@@ -188,7 +189,7 @@ export default function GalleryHero({
             </span>
             in <span className="text-accent-400">pictures</span>
           </h1>
-          <div style={{ marginTop: '2.25rem' }}>
+          <div className="gallery-hero-viewall" style={{ marginTop: '2.25rem' }}>
             <span className="relative inline-flex">
               <span aria-hidden className="btn-green hero-cta invisible">
                 View all photos

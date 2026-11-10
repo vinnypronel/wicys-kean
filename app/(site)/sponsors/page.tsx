@@ -19,6 +19,7 @@ import SectionHeading from '@/components/section-heading';
 import { getSiteSettings, getSponsorPage, getSponsors } from '@/lib/content';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/sponsors' },
   title: 'Sponsor Us',
   description:
     'Support WiCyS at Kean University. Sponsor our Capture the Flag competition, workshops, and programs to reach motivated cybersecurity students.',

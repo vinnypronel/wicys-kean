@@ -8,7 +8,7 @@ import { verifyAdminSession } from '@/lib/admin-auth';
 import AdminLoginForm from '@/components/admin-login-form';
 
 export const metadata: Metadata = {
-  title: 'Admin Login | WiCyS Kean',
+  title: 'Admin Login',
   description: 'Log in to the WiCyS Kean administrator dashboard.',
   // Kept out of search results.
   robots: { index: false, follow: false },

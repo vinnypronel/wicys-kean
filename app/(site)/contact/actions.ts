@@ -62,8 +62,12 @@ export async function sendContactMessage(
   }
 
   // Saved so it shows in the admin dashboard (the database on the live site).
+  // The visitor only sees "thanks" if the message was saved or emailed.
+  let saved = false;
+  let emailed = false;
   try {
     await saveContactMessage(values);
+    saved = true;
   } catch (err) {
     console.error('Failed to save contact message:', err);
   }
@@ -100,12 +104,24 @@ export async function sendContactMessage(
         }),
       });
 
-      if (!res.ok) {
+      if (res.ok) {
+        emailed = true;
+      } else {
         console.error('Contact form: Resend responded', res.status, await res.text());
       }
     } catch (err) {
       console.error('Failed to send contact notification email:', err);
     }
+  }
+
+  if (!saved && !emailed) {
+    return {
+      status: 'error',
+      message: to
+        ? `Something went wrong sending your message. Please try again, or email us at ${to}.`
+        : 'Something went wrong sending your message. Please try again in a few minutes.',
+      values,
+    };
   }
 
   return {

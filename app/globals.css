@@ -1314,7 +1314,25 @@ html[data-route="in"] main {
     width: auto !important;
     height: auto !important;
     margin-right: 0;
-    margin-top: -1.25rem;
+    margin-top: 2.25rem;
+    order: 1;
+  }
+
+  /* Play all takes the spot right under the heading, View all photos goes
+     under it. */
+  .gallery-hero-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0 !important;
+  }
+
+  .gallery-hero-text {
+    display: contents;
+  }
+
+  .gallery-hero-viewall {
+    order: 2;
+    margin-top: 0.75rem !important;
   }
 
   .play-all {

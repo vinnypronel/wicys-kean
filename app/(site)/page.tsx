@@ -54,6 +54,7 @@ export const revalidate = 3600;
 
 // The home page's own description for search results and link previews.
 export const metadata: Metadata = {
+  alternates: { canonical: '/' },
   description:
     'WiCyS Kean is the Kean University student chapter of Women in CyberSecurity. Free to join for every major and skill level, with workshops, guest speakers, a Capture the Flag competition, and conference trips.',
 };

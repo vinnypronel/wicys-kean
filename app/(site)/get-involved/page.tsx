@@ -13,6 +13,7 @@ import YouTubeVideo from '@/components/youtube-video';
 import { getGetInvolvedPage, getSiteSettings } from '@/lib/content';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/get-involved' },
   title: 'Get Involved',
   description:
     'Join WiCyS at Kean University. Free membership, open to all majors and skill levels. Learn new skills, find your community, and make an impact.',

@@ -24,6 +24,14 @@ const nextConfig: NextConfig = {
     return [
       // The Join page was folded into Get Involved.
       { source: "/join", destination: "/get-involved#join", permanent: true },
+      // The Vercel address sends visitors and search engines to the real
+      // domain, so Google never sees two copies of the site.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "wicys-kean.vercel.app" }],
+        destination: "https://www.wicyskean.me/:path*",
+        permanent: true,
+      },
     ];
   },
   async headers() {

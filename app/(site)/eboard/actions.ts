@@ -30,6 +30,19 @@ function escapeHtml(value: string) {
     .replace(/"/g, '&quot;');
 }
 
+// The first bytes of each allowed file type, so a file that is only renamed
+// to .pdf is turned away. A .docx is a zip file; an old .doc is an OLE file.
+const SIGNATURES: Record<string, number[]> = {
+  '.pdf': [0x25, 0x50, 0x44, 0x46], // %PDF
+  '.docx': [0x50, 0x4b, 0x03, 0x04], // PK..
+  '.doc': [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1],
+};
+
+function matchesFileType(ext: string, head: Uint8Array) {
+  const signature = SIGNATURES[ext];
+  return Boolean(signature) && signature.every((byte, index) => head[index] === byte);
+}
+
 export async function submitEboardInterest(
   _prev: EboardInterestState,
   formData: FormData
@@ -98,6 +111,8 @@ export async function submitEboardInterest(
     const allowedExts = ['.pdf', '.doc', '.docx'];
     if (!allowedExts.includes(ext)) {
       errors.resume = 'Invalid file type. Please upload a PDF or Word document (.pdf, .doc, .docx).';
+    } else if (!matchesFileType(ext, new Uint8Array(await resumeFile.slice(0, 8).arrayBuffer()))) {
+      errors.resume = 'That file does not look like a real PDF or Word document. Please upload it again.';
     }
   }
 

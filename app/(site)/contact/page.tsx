@@ -21,6 +21,7 @@ import { getSiteSettings } from '@/lib/content';
 import { meetingSummary } from '@/lib/format';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/contact' },
   title: 'Contact',
   description:
     'Get in touch with WiCyS at Kean University. Find our email, Discord, Instagram, LinkedIn, and CougarLink pages.',

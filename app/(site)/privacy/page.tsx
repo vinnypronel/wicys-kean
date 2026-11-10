@@ -4,6 +4,7 @@ import SectionHeading from '@/components/section-heading';
 import { getSiteSettings } from '@/lib/content';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/privacy' },
   title: 'Privacy',
   description:
     'What WiCyS at Kean University collects through this website, who can see it, and how to ask us to delete it.',
