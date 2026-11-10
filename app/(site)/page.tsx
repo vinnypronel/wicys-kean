@@ -344,7 +344,7 @@ export default async function HomePage() {
           <div>
             <p className="kicker kicker-light">Capture the Flag</p>
             <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Our annual CTF brings campus hackers together
+              Our annual CTF brings hackers together from all campuses
             </h2>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-brand-200">
               {ctf?.plannedBlurb ??

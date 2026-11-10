@@ -1,6 +1,7 @@
 'use client';
 
 import Lenis from 'lenis';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, type ReactNode } from 'react';
 
 const SCROLLBAR_IDLE_MS = 2250;
@@ -12,6 +13,33 @@ export default function SmoothScrollProvider({
   children: ReactNode;
 }) {
   const thumbRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const lastPath = useRef(pathname);
+  const fromHistory = useRef(false);
+
+  // Any link to another page lands on the top of that page, unless it points
+  // at a section (#) or the visitor used the back or forward button.
+  useEffect(() => {
+    const onPop = () => {
+      fromHistory.current = true;
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
+  useEffect(() => {
+    if (lastPath.current === pathname) return;
+    lastPath.current = pathname;
+    if (fromHistory.current) {
+      fromHistory.current = false;
+      return;
+    }
+    if (window.location.hash) return;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.dispatchEvent(
+      new CustomEvent('site:scroll-top', { detail: { instant: true } })
+    );
+  }, [pathname]);
 
   useEffect(() => {
     const thumb = thumbRef.current;
