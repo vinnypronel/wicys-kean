@@ -175,8 +175,18 @@ export default async function HomePage() {
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-auto flex justify-end pt-7">
-                    <Link href="/events" className="btn-outline whitespace-nowrap">
+                  {/* Same layout as the Kean seal in the sponsorship card. */}
+                  <div className="mt-auto flex flex-col items-start gap-4 pt-7 xl:flex-row xl:flex-nowrap xl:items-end xl:justify-between">
+                    <span className="grid h-20 w-20 shrink-0 place-items-center xl:h-16 xl:w-16">
+                      <Image
+                        src="/images/wicys-shield.png"
+                        alt="WiCyS logo"
+                        width={202}
+                        height={244}
+                        className="h-full w-auto object-contain"
+                      />
+                    </span>
+                    <Link href="/events" className="btn-outline self-end whitespace-nowrap">
                       View all events
                       <ArrowRight className="h-4 w-4" />
                     </Link>
