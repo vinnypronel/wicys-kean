@@ -1356,3 +1356,37 @@ html[data-route="in"] main {
     font-size: 0.95rem;
   }
 }
+
+/* E-Board hero below 1280px: title, then the group photo, then the buttons,
+   all on the first screen. */
+@media (max-width: 1279px) {
+  .eboard-hero-text {
+    display: contents;
+  }
+
+  .eboard-hero-mobile-photo {
+    order: 1;
+    margin-top: 1.75rem !important;
+  }
+
+  .eboard-hero-buttons {
+    order: 2;
+    margin-top: 1.5rem !important;
+  }
+}
+
+/* Phones: less space above the title and the buttons two to a row, so the
+   whole hero fits above Safari's address bar. */
+@media (max-width: 767px) {
+  .eboard-hero-text + .eboard-hero-mobile-photo,
+  .eboard-hero-mobile-photo {
+    margin-top: 1.25rem !important;
+  }
+
+  .eboard-hero-buttons {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 1.25rem !important;
+  }
+}

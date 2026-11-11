@@ -247,7 +247,6 @@ function MajorLine({ text }: { text: string }) {
 
 // A small horizontal card for the support roles.
 function SupportCard({ member }: { member: RosterMember }) {
-  const icon = roleIcon(member.role);
   return (
     <div className="group">
     <article className="flex items-center gap-4 rounded-xl border border-brand-100 bg-white p-4 transition-[translate,border-color] duration-500 ease-out group-hover:-translate-y-1 group-hover:border-brand-400">
@@ -266,15 +265,12 @@ function SupportCard({ member }: { member: RosterMember }) {
           </span>
         )}
       </div>
-      {/* The role sits on the same line as the name. */}
+      {/* The section heading already says Alumni support, so the card only
+          shows the name and degrees. */}
       <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-4 gap-y-1">
         <h3 className="font-display text-lg font-bold tracking-tight text-ink">
           {member.name}
         </h3>
-        <p className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-brand-700">
-          {createElement(icon, { 'aria-hidden': true, weight: 'duotone', className: 'h-4 w-4 shrink-0' })}
-          {member.role}
-        </p>
         {member.major ? (
           <p className="w-full text-xs text-ink-soft">{member.major}</p>
         ) : null}
@@ -328,7 +324,7 @@ export default function EboardRoster({ members }: { members: RosterMember[] }) {
 
       {support.length > 0 ? (
         <div>
-          <TierLabel>Support team</TierLabel>
+          <TierLabel>Alumni support</TierLabel>
           {/* Spans the same width as the officer rows above. */}
           <div
             className={`mt-6 grid gap-5 sm:grid-cols-2 ${

@@ -70,13 +70,13 @@ export default async function EboardPage() {
           </div>
         </div>
         <div
-          className="container-site flex flex-col pb-16 pt-28 sm:pb-20 xl:min-h-[100svh] xl:flex-row xl:items-center xl:justify-end"
+          className="container-site flex flex-col pb-12 pt-[5.5rem] sm:pb-20 sm:pt-28 xl:min-h-[100svh] xl:flex-row xl:items-center xl:justify-end"
           style={{ position: 'relative' }}
         >
           {/* Only as wide as the title, so the buttons can line up under its
               right edge. */}
           <div
-            className="ml-auto max-w-xl"
+            className="eboard-hero-text ml-auto max-w-xl"
             style={{
               width: 'fit-content',
               // Pushed right into the page margin on wide screens (up to
@@ -100,7 +100,7 @@ export default async function EboardPage() {
                 on a hidden copy of itself so it can grow on hover without
                 shifting anything. */}
             <div
-              className="hero-cta-end mt-9"
+              className="eboard-hero-buttons hero-cta-end mt-9"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -141,7 +141,7 @@ export default async function EboardPage() {
           </div>
           {/* Phones, tablets and small laptops: the photo sits under the
               text, so the text never sits on top of it. */}
-          <div className="relative mt-10 aspect-[3/2] w-full overflow-hidden rounded-2xl xl:hidden">
+          <div className="eboard-hero-mobile-photo relative mt-10 aspect-[3/2] w-full overflow-hidden rounded-2xl xl:hidden">
             <Image
               src="/images/eboard-group.jpg"
               alt="WiCyS Kean members and e-board standing together for a group photo"

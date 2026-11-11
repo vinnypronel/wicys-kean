@@ -178,7 +178,7 @@ export default function SiteHeader({
         className={`${overlayHeader ? 'fixed' : 'sticky'} top-0 z-50 w-full border-b transition-[background-color,border-color,box-shadow] duration-300 ${
           transparentAtTop
             ? 'site-header-overlay border-transparent bg-transparent shadow-none'
-            : `bg-white/95 shadow-sm backdrop-blur ${menuOpen ? 'border-transparent' : 'border-brand-100'}`
+            : `bg-white shadow-sm backdrop-blur lg:bg-white/95 ${menuOpen ? 'border-transparent' : 'border-brand-100'}`
         }`}
       >
         <div className="container-site relative z-50 flex h-16 items-center justify-between gap-4 lg:h-[72px]">
