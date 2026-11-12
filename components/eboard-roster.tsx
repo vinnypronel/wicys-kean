@@ -143,15 +143,15 @@ function OfficerPortrait({ member }: { member: RosterMember }) {
     // narrow, so the name and role never get squeezed.
     // Hovering the wrapper (which stays put) lifts the card, so the effect
     // never flickers at the card's edge.
-    <div className="group @container">
+    <div className="group @container h-full">
     <article
-      className={`flex flex-col overflow-hidden rounded-2xl border bg-white transition-[translate,border-color,box-shadow] duration-500 ease-out group-hover:-translate-y-1.5 group-hover:shadow-xl group-hover:shadow-brand-950/10 border-brand-200 group-hover:border-brand-500 @min-[24rem]:flex-row`}
+      className={`flex h-full flex-col overflow-hidden rounded-2xl border bg-white transition-[translate,border-color,box-shadow] duration-500 ease-out group-hover:-translate-y-1.5 group-hover:shadow-xl group-hover:shadow-brand-950/10 border-brand-200 group-hover:border-brand-500 @min-[24rem]:flex-row`}
     >
       {/* Square, like the photos themselves. Beside the text it is sized
           from the screen height so both rows of officers fit on one
           screen. */}
       <div
-        className="relative w-full shrink-0 overflow-hidden bg-brand-50 @min-[24rem]:w-(--photo-w)"
+        className="relative aspect-square w-full shrink-0 overflow-hidden bg-brand-50 @min-[24rem]:aspect-auto @min-[24rem]:min-h-(--photo-w) @min-[24rem]:w-(--photo-w) @min-[24rem]:self-stretch"
         style={
           {
             // Smaller until the member's major or answer is filled in, so
@@ -160,7 +160,6 @@ function OfficerPortrait({ member }: { member: RosterMember }) {
               member.major || member.duties || member.answer
                 ? 'clamp(8.5rem, calc((100svh - 22rem) / 2), 12.5rem)'
                 : '9rem',
-            aspectRatio: '1 / 1',
           } as React.CSSProperties
         }
       >
@@ -314,7 +313,8 @@ export default function EboardRoster({ members }: { members: RosterMember[] }) {
       {officers.length > 0 ? (
         <div>
           <TierLabel>Executive officers</TierLabel>
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Every row is as tall as the tallest card, so all the cards match. */}
+          <div className="mt-6 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {officers.map((member) => (
               <OfficerPortrait key={member.slug} member={member} />
             ))}
