@@ -20,6 +20,11 @@ export default function SmoothScrollProvider({
   // Any link to another page lands on the top of that page, unless it points
   // at a section (#) or the visitor used the back or forward button.
   useEffect(() => {
+    // Opening or reloading a page always starts at the top, instead of the
+    // browser putting the visitor back where they last were.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (!window.location.hash) window.scrollTo({ top: 0, behavior: 'instant' });
+
     const onPop = () => {
       fromHistory.current = true;
     };
